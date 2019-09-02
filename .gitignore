@@ -1,0 +1,7 @@
+# Don't track these folders
+build/
+
+# Don't track these files
+# feks. 
+## *.hex
+## uart.h
