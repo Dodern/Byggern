@@ -12,12 +12,18 @@
 int main(void){
 
 	USART_Init ( MYUBRR );
+	_delay_ms(5000);
+	USART_Transmit("A");
+	_delay_ms(5000);
+	USART_Transmit("B");
 
 	 while (1) {
 		PORTA |= (1 << PA0);
-		_delay_ms(1000);
+		USART_Transmit("A");
+		_delay_ms(3000);
 		PORTA &= ~(1 << PA0);
-		_delay_ms(1000);
+		USART_Transmit("B");
+		_delay_ms(3000);
     }
 
 	return 0;
