@@ -5,25 +5,20 @@
 
 #include "uart.h"
 
-#define FOSC 1843200 // Clock Speed
+#define FOSC 4915200 // Clock Speed
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 
 int main(void){
 
 	USART_Init ( MYUBRR );
-	_delay_ms(5000);
-	USART_Transmit("A");
-	_delay_ms(5000);
-	USART_Transmit("B");
 
 	 while (1) {
-		PORTA |= (1 << PA0);
-		USART_Transmit("A");
+		unsigned char letter = USART_Receive();
+		// unsigned char letter = 'U';
 		_delay_ms(3000);
-		PORTA &= ~(1 << PA0);
-		USART_Transmit("B");
-		_delay_ms(3000);
+		// printf("%c", letter);
+		printf("hei\n");
     }
 
 	return 0;
