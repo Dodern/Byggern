@@ -5,6 +5,7 @@
 
 #include "uart.h"
 #include "xmem.h"
+#include "testSRAM.h"
 
 // Hardware definitions
 #define FOSC 4915200 // Clock Speed
@@ -26,26 +27,27 @@ int main(void){
 
     // Initiating various devices
 	USART_Init ( MYUBRR );
-    //xmem_init();
+    xmem_init();
 
     // Setting ports as output
     // DDRA = 1;
     // DDRE |= (1 << PE1);
-    DDRA = 0xFF;
-    DDRE = 0xFF;
+    // DDRA = 0xFF;
+    // DDRE = 0xFF;
 
     // Setting ports high
     // PORTE |= (1 << PE1);
 
     while (1) {
-        PORTE = 0;
-        // PORTA |= (1 << PA0) | (1 << PA1);
-        PORTA = 0xFF;
-        _delay_ms(9000);
-        PORTE = 0xFF;
-        _delay_ms(9000);
-        PORTA = 0;
-        _delay_ms(9000);
+        SRAM_test();
+        // PORTE = 0;
+        // // PORTA |= (1 << PA0) | (1 << PA1);
+        // PORTA = 0xFF;
+        // _delay_ms(9000);
+        // PORTE = 0xFF;
+        // _delay_ms(9000);
+        // PORTA = 0;
+        // _delay_ms(9000);
     };
 
 	return 0;
