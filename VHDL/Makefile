@@ -1,7 +1,7 @@
 # project name
 PROJECT=bus_led_top
 # vhdl files
-FILES = src/bus_led.vhd src/bus_led_top.vhd
+FILES = src/main.vhd #src/bus_led_top.vhd
 # testbench
 SIMTOP = led_top_tb
 SIMFILES = testbench/led_top_tb.vhd

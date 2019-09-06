@@ -1,5 +1,6 @@
 # Don't track these folders
 src/build/
+.vscode
 
 # Don't track these files
 # feks. 
