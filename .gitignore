@@ -1,8 +1,9 @@
 # Don't track these folders
 src/build/
+VHDL/ghdl
 .vscode
 
 # Don't track these files
 # feks. 
-## *.hex
+*.cf
 ## uart.h

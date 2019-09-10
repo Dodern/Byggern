@@ -13,13 +13,13 @@ entity address_decoder is
         ram_cs  : Out std_logic;
         adc_cs  : Out std_logic;
         oled_cs : Out std_logic;
-        oled_dc : Out std_logic;
+        oled_dc : Out std_logic
     );
     attribute LOC : string; 
     attribute LOC of ram_cs      :  signal is "P19";
     attribute LOC of adc_cs      :  signal is "P18";
     attribute LOC of oled_cs     :  signal is "P17";
-    attribute LOC of oled_ds     :  signal is "P16"; -- Not necessary
+    -- attribute LOC of oled_ds     :  signal is "P16"; -- Not necessary
 
     attribute LOC of a11         :  signal is "P1";
     attribute LOC of a10         :  signal is "P2";
@@ -28,5 +28,7 @@ entity address_decoder is
 end address_decoder;
 
 architecture behave of address_decoder is begin
-    -- implement the functionality here
+    oled_cs <= (NOT a11) and (NOT a10);
+    adc_cs <= (NOT a11) and (a10);
+    ram_cs <= (a11);
 end behave;
