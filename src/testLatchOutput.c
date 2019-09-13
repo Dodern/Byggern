@@ -11,17 +11,6 @@
 #define FOSC 4915200 // Clock Speed
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
-// Address Defintions
-// #define IO_MEMORY ((AVR162_IO_MEMORY_REGS*)0x1000)
-
-// // Address Structs
-// typedef struct {
-//     volatile uint16_t OLED_COMMAND[32];
-//     volatile uint16_t OLED_DATA[32];
-//     volatile uint16_t ADC[64];
-//     volatile uint16_t SRAM[128];
-// }AVR162_IO_MEMORY_REGS;
-
 
 int main(void){
 
