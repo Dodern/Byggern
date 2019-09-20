@@ -21,11 +21,14 @@ int main(void){
     // Initiating various devices
 	USART_Init ( MYUBRR );
     xmem_init();
+    ADC_init();
 
     while (1) {
        ADC_print_all_channels();
        int direction = ADC_joystick_direction();
-       printf("direction: %d\n\r", direction);
+       ADC_print_direction(direction);
+       ADC_joystick_position();
+       ADC_print_current_position();
 
         _delay_ms(15000);
         // ADC_select_channel(LEFT_SLIDER); 
