@@ -17,17 +17,14 @@
 
 int main(void){
 
-    // Initializing global variables;
-    uint8_t read_data_array[4];
-    uint8_t joystick_xy_array[2];
 
     // Initiating various devices
 	USART_Init ( MYUBRR );
     xmem_init();
 
     while (1) {
-       ADC_print_all_channels(read_data_array);
-       int direction = ADC_joystick_direction(read_data_array);
+       ADC_print_all_channels();
+       int direction = ADC_joystick_direction();
        printf("direction: %d\n\r", direction);
 
         _delay_ms(15000);
