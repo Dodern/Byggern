@@ -18,7 +18,8 @@
 int main(void){
 
     // Initializing global variables;
-    uint16_t read_data_array[4];
+    uint8_t read_data_array[4];
+    uint8_t joystick_xy_array[2];
 
     // Initiating various devices
 	USART_Init ( MYUBRR );

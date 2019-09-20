@@ -3,6 +3,7 @@
 
 #include <util/delay.h>
 #include <avr/io.h>
+#include <time.h>
 
 enum joystick_direction {LEFT, RIGHT, UP, DOWN, NEUTRAL};
 
