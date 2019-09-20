@@ -21,7 +21,7 @@ int main(void){
 	USART_Init ( MYUBRR );
     xmem_init();
 
-    uint16_t read_data_array[4] = {0,0,0,0};
+    uint16_t read_data_array[4];
 
     // printf("%s", adc_channels[1] );
     while (1) {

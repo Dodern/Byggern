@@ -9,33 +9,25 @@ const char* adc_channels[] = {
     "RIGHT_SLIDER"
 };
 
-uint16_t read_data_array[4] = {0,0,0,0};
 
-void ADC_print_all_channels(uint16_t* read_data){
+void ADC_print_all_channels(uint8_t* read_data){
     ADC_read_all_channels(read_data);
-    for (uint16_t i=0; i < 4; i++) {
-        // printf("ADC_print_all reads from %d \n\r", i);
+    for (uint8_t i=0; i < 4; i++) {
         printf(" %s: %d ", adc_channels[i], read_data[i] );
-        // printf("%s: ", adc_channels[i]);
     }
     printf("  \n\r");
 }
 
-void ADC_read_all_channels(uint16_t* array){
-    // int array[4];
-    for (uint16_t i = 0; i < 4; i++) {
+void ADC_read_all_channels(uint8_t* array){
+    for (uint8_t i = 0; i < 4; i++) {
         ADC_select_channel(i+4);
         array[i] = xmem_read(0,ADC);
-        // uint16_t readData= xmem_read(0,ADC);
-        // printf("xmem reads %d \n\r", array[i]);
-        // printf("xmem reads %d \n\r", readData);
         _delay_ms(40); 
     }
 }
 
 void ADC_select_channel(uint8_t channel){
     xmem_write(channel, 0, ADC);
-    printf("selected channel %d \n\r", channel);
     _delay_ms(40); 
 }
 
