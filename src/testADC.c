@@ -21,8 +21,11 @@ int main(void){
 	USART_Init ( MYUBRR );
     xmem_init();
 
+    uint16_t read_data_array[4] = {0,0,0,0};
+
+    // printf("%s", adc_channels[1] );
     while (1) {
-        ADC_read_all_channels();
+       ADC_print_all_channels(read_data_array);
         _delay_ms(15000);
         // ADC_select_channel(LEFT_SLIDER); 
         // uint8_t readData = xmem_read( 0, ADC);
