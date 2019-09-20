@@ -17,7 +17,6 @@
 
 int main(void){
 
-
     // Initiating various devices
 	USART_Init ( MYUBRR );
     xmem_init();

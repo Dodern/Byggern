@@ -7,6 +7,7 @@
 #include "uart.h"
 #include "xmem.h"
 #include "ADC.h"
+#include "oled_driver.h"
 
 // Hardware definitions
 #define FOSC 4915200 // Clock Speed
@@ -19,10 +20,14 @@ int main(void){
     // Initiating various devices
 	USART_Init ( MYUBRR );
     xmem_init();
-    uint8_t number = 50;
+    ADC_init();
+    oled_init();
+    
     while (1) {
-        xmem_write(number,1, OLED_DATA);
+        oled_write_data(0xFF);
+        _delay_ms(50);
     };
+
 
 	return 0;
 }
