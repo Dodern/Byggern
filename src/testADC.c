@@ -17,15 +17,18 @@
 
 int main(void){
 
+    // Initializing global variables;
+    uint16_t read_data_array[4];
+
     // Initiating various devices
 	USART_Init ( MYUBRR );
     xmem_init();
 
-    uint16_t read_data_array[4];
-
-    // printf("%s", adc_channels[1] );
     while (1) {
        ADC_print_all_channels(read_data_array);
+       int direction = ADC_joystick_direction(read_data_array);
+       printf("direction: %d\n\r", direction);
+
         _delay_ms(15000);
         // ADC_select_channel(LEFT_SLIDER); 
         // uint8_t readData = xmem_read( 0, ADC);

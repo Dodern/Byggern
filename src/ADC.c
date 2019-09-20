@@ -9,7 +9,6 @@ const char* adc_channels[] = {
     "RIGHT_SLIDER"
 };
 
-
 void ADC_print_all_channels(uint8_t* read_data){
     ADC_read_all_channels(read_data);
     for (uint8_t i=0; i < 4; i++) {
@@ -31,13 +30,24 @@ void ADC_select_channel(uint8_t channel){
     _delay_ms(40); 
 }
 
-int ADC_joystick_direction(){
-    for (int i=4; i < 8; i++) {
-        ADC_select_channel(i);
-        uint8_t readData = xmem_read(0,ADC);
-        
-        printf(" %s: %d ", adc_channels[i-4], readData );
-        // printf("%s: ", adc_channels[i]);
-        _delay_ms(40); 
+uint8_t ADC_joystick_direction(uint8_t* read_data){
+    uint8_t vertical_value = read_data[0];
+    uint8_t horizontal_value = read_data[1];
+    enum joystick_direction dir = 0;
+
+    if (horizontal_value > 200) {
+        dir = RIGHT;
+    } 
+    else if  (horizontal_value < 70) {
+        dir = LEFT;
     }
+    else if (vertical_value > 200) {
+        dir = UP;
+    }
+    else if (vertical_value < 70) {
+        dir = DOWN;
+    } else{
+        dir = NEUTRAL;
+    }
+    return dir;
 }
