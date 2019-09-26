@@ -1,4 +1,4 @@
-#include <avr/io.h>
+
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <stdint.h>
@@ -8,6 +8,7 @@
 #include "xmem.h"
 #include "ADC.h"
 #include "oled_driver.h"
+// #include "fonts.h"
 
 // Hardware definitions
 #define FOSC 4915200 // Clock Speed
@@ -24,7 +25,11 @@ int main(void){
     oled_init();
     
     while (1) {
-        oled_write_data(0xFF);
+        // oled_write_data(0xFF);
+        // char char1 = 'a';
+        // oled_print_char(char1);
+        char hello[5] = {'h','e','r','r','o'};
+        oled_print_string(hello);
         _delay_ms(50);
     };
 

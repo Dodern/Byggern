@@ -1,5 +1,14 @@
 #include "oled_driver.h"
+#include <stdlib.h>
+#include <util/delay.h>
+// #include <avr/io.h>
+#include <avr/interrupt.h>
+// #include <stdint.h>
+
+
 #include "xmem.h"
+#include "fonts.h"
+#include "uart.h"
 
 void oled_init() {
     oled_write_command(0xae); // display off
@@ -39,3 +48,27 @@ void oled_write_command(uint8_t command){
 void oled_write_data(uint8_t data){
     xmem_write(data, 0, OLED_DATA);
 }
+
+void oled_print_char(uint8_t character){
+    uint8_t font_num = character - 32;
+    printf("fontnum = %d", font_num);
+    for (int i = 0; i < 8; i++) {
+        oled_write_data(pgm_read_byte(&font8[font_num][i]));
+    }
+}
+
+void oled_print_string(char* string){
+    uint8_t i = 0;
+    while ( string[i] != '\0') {
+        oled_print_char(string[i]);
+        i++;
+    }
+}
+
+// // }
+// // void oled_reset(){
+//     for 
+// }
+// void oled_hello_world(){
+//     oled_write_data()
+// }
