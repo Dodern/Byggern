@@ -11,7 +11,7 @@ void ADC_read_all_channels();
 void ADC_print_all_channels();
 void ADC_select_channel(uint8_t channel);
 uint8_t ADC_joystick_direction();
-void ADC_joystick_position();
+void ADC_read_joystick_position();
 void ADC_print_current_position();
 void ADC_print_direction(uint8_t direction);
 
