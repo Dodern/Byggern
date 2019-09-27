@@ -23,12 +23,6 @@ int main(void){
     ADC_init();
 
     while (1) {
-       ADC_print_all_channels();
-       int direction = ADC_joystick_direction();
-       ADC_print_direction(direction);
-       ADC_joystick_position();
-       ADC_print_current_position();
-
         _delay_ms(15000);
         // ADC_select_channel(LEFT_SLIDER); 
         // uint8_t readData = xmem_read( 0, ADC);

@@ -26,14 +26,19 @@ int main(void){
 
 
     oled_reset();
-    char hello[6] = {'h','e','r','r','o','\0'};
-    oled_print_string(hello);
+    //char hello[6] = {'h','e','r','r','o','\0'};
+   
 
     while (1) {
-        // oled_write_data(0xFF);
-        // char char1 = 'a';
-        // oled_print_char(char1);
-        // _delay_ms(50);
+        ADC_print_all_channels();
+        int direction = ADC_joystick_direction();
+        ADC_print_direction(direction);
+        ADC_joystick_position();
+        ADC_print_current_position();
+        oled_print_main_menu();
+        oled_move_pointer(direction);
+        _delay_ms(150);
+        
     };
 
 

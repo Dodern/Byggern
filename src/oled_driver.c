@@ -7,8 +7,13 @@
 #include "fonts.h"
 #include "uart.h"
 #include "oled_driver.h"
+#include "ADC.h"
 
-#define LENGTH_SCREEN 1016  //1016 = 8*127
+#define LENGTH_SCREEN 1024  //1024 = 8*128
+static unsigned int horizontal_pos = 0;
+static unsigned int vertical_pos = 0;
+static unsigned int pointer_pos = 0;
+static unsigned int menu_length = 0;
 
 void oled_init() {
     oled_write_command(0xae); // display off
@@ -25,7 +30,7 @@ void oled_init() {
     oled_write_command(0xd9); //set pre-charge period
     oled_write_command(0x21);
     oled_write_command(0x20); //Set Memory Addressing Mode
-    oled_write_command(0x00);   //Horizontal addressing mode
+    oled_write_command(0x00);   //horizontal_pos addressing mode
     oled_write_command(0x21); //Set column address
     oled_write_command(0x00);   //start
     oled_write_command(0x7F);   //end
@@ -47,19 +52,18 @@ void oled_write_command(uint8_t command){
 
 void oled_write_data(uint8_t data){
     xmem_write(data, 0, OLED_DATA);
-    _delay_ms(1);
+    horizontal_pos++;
+    oled_pos(horizontal_pos);
 }
 
 void oled_reset(){
     for (int i = 0; i < LENGTH_SCREEN; i++) { 
         oled_write_data(0);
-        // _delay_ms(1);
     }
 }
-
+    
 void oled_print_char(uint8_t character){
     uint8_t font_num = character - 32;
-    printf("fontnum = %d", font_num);
     for (int i = 0; i < 8; i++) {
         oled_write_data(pgm_read_byte(&font8[font_num][i]));
     }
@@ -71,4 +75,73 @@ void oled_print_string(char* string){
         oled_print_char(string[i]);
         i++;
     }
+}
+
+void oled_clear_to_line_end(){
+     for (int i = horizontal_pos; i < 127; i+=8){
+        oled_print_char(' ');
+    }
+}
+
+void oled_clear_to_pointer(){
+    for (int i = horizontal_pos; i < 127-16; i+=8){
+        oled_print_char(' ');
+    }
+}
+
+void oled_clear_to_end(){
+    for (int vert_i = vertical_pos; vert_i < 8; vert_i++)
+    {
+        for (int hor_i = horizontal_pos; hor_i < 127; hor_i+=8){
+            oled_print_char(' ');
+        }
+    }
+}
+
+void oled_print_pointer(){
+    oled_print_string("<-");
+}
+
+void oled_pos(){
+    if (horizontal_pos > 127){
+        vertical_pos++;
+        horizontal_pos = 0;
+    }
+    if (vertical_pos > 7){
+        vertical_pos = 0;
+        horizontal_pos = 0;
+    }
+}
+
+void oled_move_pointer(int direction){
+    if (direction == UP && pointer_pos != 0){
+        pointer_pos--;
+    }
+    else if (direction == DOWN && pointer_pos < menu_length - 1){
+        pointer_pos++;
+    }
+    printf("Pointer pos: %d", pointer_pos);
+}
+
+void oled_line_end(){
+    if (vertical_pos == pointer_pos){
+        oled_clear_to_pointer(); 
+        oled_print_pointer();
+    }
+    else {
+        oled_clear_to_line_end();
+    }
+}
+
+void oled_print_main_menu(){
+    menu_length = 4;
+    oled_print_string("Herro");
+    oled_line_end();
+    oled_print_string("Hello");
+    oled_line_end();
+    oled_print_string("Olav");
+    oled_line_end();
+    oled_print_string("Jacob");
+    oled_line_end();
+    oled_clear_to_end();
 }
