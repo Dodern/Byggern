@@ -1,3 +1,6 @@
+#include <avr/io.h>
+#include <stdbool.h>
+
 #include "ADC.h"
 #include "xmem.h"
 #include "uart.h"
@@ -17,6 +20,9 @@ void ADC_init(){
     ADC_read_all_channels();    
     joystick_center_array[0] = read_data_array[1];
     joystick_center_array[1] = read_data_array[0];
+    PORTB &=  ~(1 << PB0) | ~(1 << PB1); // Setting to input for buttons
+    DDRB &=  ~(1 << DDB0) | ~(1 << DDB1); // Setting to input for buttons
+    // DDRB &= ~(1 << DDB0);// | ~(1 << DDB1) | ~(1 << DDB2); // Setting to input for buttons
 }
 
 void ADC_print_all_channels(){
@@ -40,7 +46,8 @@ void ADC_select_channel(uint8_t channel){
     _delay_ms(40); 
 }
 
-uint8_t ADC_joystick_direction(){
+uint8_t ADC_get_joystick_direction(){
+    ADC_read_joystick_position();
     uint8_t vertical_value = read_data_array[0];
     uint8_t horizontal_value = read_data_array[1];
     enum joystick_direction dir = 0;
@@ -100,3 +107,11 @@ void ADC_read_joystick_position(){
 void ADC_print_current_position(){
     printf("X: %d, Y: %d \n\r", joystick_current_position[0], joystick_current_position[1]);
 }
+
+int adc_is_joystick_button_pressed(){
+    if (PINB == 0) {
+        return true;
+    } else {
+        return false;
+    }
+};

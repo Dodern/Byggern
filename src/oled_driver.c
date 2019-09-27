@@ -65,8 +65,8 @@ void oled_reset(){
 }
     
 void oled_print_picture(){
-    for (int i = 0; i < 512; i++){
-        oled_write_data(pgm_read_byte(&tekled[i]));
+    for (int i = 0; i < 1024; i++){
+        oled_write_data(pgm_read_byte(&tekledlogo[i]));
     }
 }
 

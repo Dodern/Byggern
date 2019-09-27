@@ -3,6 +3,8 @@
 #include <util/delay.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <avr/io.h>
 
 #include "uart.h"
 #include "xmem.h"
@@ -26,16 +28,18 @@ int main(void){
 
 
     oled_reset();
-    //char hello[6] = {'h','e','r','r','o','\0'};
+    oled_print_picture();
+    _delay_ms(15000);
    
 
-    while (1) {
-        // oled_print_picture();
-        ADC_read_joystick_position();
-        oled_move_pointer(ADC_joystick_direction());
-        oled_print_main_menu();
-        _delay_ms(150);
-        
+    while (1) {    
+        // oled_print_main_menu();
+        // oled_move_pointer(ADC_get_joystick_direction());
+        // _delay_ms(150);
+        // printf("PB0 is: %d\n\r", PINB);
+        if (adc_is_joystick_button_pressed()) {
+            printf("Joystick button has been pressed!\n\r");
+        }
     };
 
 
