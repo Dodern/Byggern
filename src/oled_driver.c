@@ -9,7 +9,9 @@
 #include "oled_driver.h"
 #include "ADC.h"
 
-#define LENGTH_SCREEN 1024  //1024 = 8*128
+#define SCREEN_LENGTH 1024  //1024 = 8*128
+#define LINE_LENGTH 127
+#define CHAR_LENGTH 8 //font8
 static unsigned int horizontal_pos = 0;
 static unsigned int vertical_pos = 0;
 static unsigned int pointer_pos = 0;
@@ -57,11 +59,17 @@ void oled_write_data(uint8_t data){
 }
 
 void oled_reset(){
-    for (int i = 0; i < LENGTH_SCREEN; i++) { 
+    for (int i = 0; i < SCREEN_LENGTH; i++) { 
         oled_write_data(0);
     }
 }
     
+void oled_print_picture(){
+    for (int i = 0; i < 512; i++){
+        oled_write_data(pgm_read_byte(&tekled[i]));
+    }
+}
+
 void oled_print_char(uint8_t character){
     uint8_t font_num = character - 32;
     for (int i = 0; i < 8; i++) {
@@ -78,21 +86,21 @@ void oled_print_string(char* string){
 }
 
 void oled_clear_to_line_end(){
-     for (int i = horizontal_pos; i < 127; i+=8){
+     for (int i = horizontal_pos; i < LINE_LENGTH; i+=CHAR_LENGTH){
         oled_print_char(' ');
     }
 }
 
 void oled_clear_to_pointer(){
-    for (int i = horizontal_pos; i < 127-16; i+=8){
+    for (int i = horizontal_pos; i < LINE_LENGTH-2*CHAR_LENGTH; i+=CHAR_LENGTH){
         oled_print_char(' ');
     }
 }
 
 void oled_clear_to_end(){
-    for (int vert_i = vertical_pos; vert_i < 8; vert_i++)
+    for (int vert_i = vertical_pos; vert_i < CHAR_LENGTH; vert_i++)
     {
-        for (int hor_i = horizontal_pos; hor_i < 127; hor_i+=8){
+        for (int hor_i = horizontal_pos; hor_i < LINE_LENGTH; hor_i+=CHAR_LENGTH){
             oled_print_char(' ');
         }
     }
@@ -103,7 +111,7 @@ void oled_print_pointer(){
 }
 
 void oled_pos(){
-    if (horizontal_pos > 127){
+    if (horizontal_pos > LINE_LENGTH){
         vertical_pos++;
         horizontal_pos = 0;
     }
@@ -120,7 +128,7 @@ void oled_move_pointer(int direction){
     else if (direction == DOWN && pointer_pos < menu_length - 1){
         pointer_pos++;
     }
-    printf("Pointer pos: %d", pointer_pos);
+    //printf("Pointer pos: %d", pointer_pos);
 }
 
 void oled_line_end(){

@@ -30,13 +30,10 @@ int main(void){
    
 
     while (1) {
-        ADC_print_all_channels();
-        int direction = ADC_joystick_direction();
-        ADC_print_direction(direction);
-        ADC_joystick_position();
-        ADC_print_current_position();
+        // oled_print_picture();
+        ADC_read_joystick_position();
+        oled_move_pointer(ADC_joystick_direction());
         oled_print_main_menu();
-        oled_move_pointer(direction);
         _delay_ms(150);
         
     };
