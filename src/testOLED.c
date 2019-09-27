@@ -23,14 +23,17 @@ int main(void){
     xmem_init();
     ADC_init();
     oled_init();
-    
+
+
+    oled_reset();
+    char hello[6] = {'h','e','r','r','o','\0'};
+    oled_print_string(hello);
+
     while (1) {
         // oled_write_data(0xFF);
         // char char1 = 'a';
         // oled_print_char(char1);
-        char hello[5] = {'h','e','r','r','o'};
-        oled_print_string(hello);
-        _delay_ms(50);
+        // _delay_ms(50);
     };
 
 

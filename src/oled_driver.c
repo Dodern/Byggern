@@ -1,14 +1,14 @@
-#include "oled_driver.h"
 #include <stdlib.h>
 #include <util/delay.h>
-// #include <avr/io.h>
-#include <avr/interrupt.h>
-// #include <stdint.h>
-
+#include <avr/io.h>
+#include <stdint.h>
 
 #include "xmem.h"
 #include "fonts.h"
 #include "uart.h"
+#include "oled_driver.h"
+
+#define LENGTH_SCREEN 1016  //1016 = 8*127
 
 void oled_init() {
     oled_write_command(0xae); // display off
@@ -47,6 +47,14 @@ void oled_write_command(uint8_t command){
 
 void oled_write_data(uint8_t data){
     xmem_write(data, 0, OLED_DATA);
+    _delay_ms(1);
+}
+
+void oled_reset(){
+    for (int i = 0; i < LENGTH_SCREEN; i++) { 
+        oled_write_data(0);
+        // _delay_ms(1);
+    }
 }
 
 void oled_print_char(uint8_t character){
@@ -64,11 +72,3 @@ void oled_print_string(char* string){
         i++;
     }
 }
-
-// // }
-// // void oled_reset(){
-//     for 
-// }
-// void oled_hello_world(){
-//     oled_write_data()
-// }
