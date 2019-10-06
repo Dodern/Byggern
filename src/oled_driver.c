@@ -7,7 +7,7 @@
 #include "fonts.h"
 #include "uart.h"
 #include "oled_driver.h"
-#include "ADC.h"
+#include "adc_driver.h"
 
 #define SCREEN_LENGTH 1024  //1024 = 8*128
 #define LINE_LENGTH 127

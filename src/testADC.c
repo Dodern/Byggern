@@ -6,7 +6,7 @@
 
 #include "uart.h"
 #include "xmem.h"
-#include "ADC.h"
+#include "adc_driver.h"
 
 // Hardware definitions
 #define FOSC 4915200 // Clock Speed

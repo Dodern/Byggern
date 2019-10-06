@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <stdbool.h>
 
-#include "ADC.h"
+#include "adc_driver.h"
 #include "xmem.h"
 #include "uart.h"
 
@@ -16,8 +16,8 @@ const char* adc_channels[] = {
     "RIGHT_SLIDER"
 };
 
-void ADC_init(){
-    ADC_read_all_channels();    
+void adc_init(){
+    adc_read_all_channels();    
     joystick_center_array[0] = read_data_array[1];
     joystick_center_array[1] = read_data_array[0];
     PORTB &=  ~(1 << PB0) | ~(1 << PB1); // Setting to input for buttons
@@ -25,29 +25,29 @@ void ADC_init(){
     // DDRB &= ~(1 << DDB0);// | ~(1 << DDB1) | ~(1 << DDB2); // Setting to input for buttons
 }
 
-void ADC_print_all_channels(){
-    ADC_read_all_channels();
+void adc_print_all_channels(){
+    adc_read_all_channels();
     for (uint8_t i=0; i < 4; i++) {
         printf(" %s: %d ", adc_channels[i], read_data_array[i] );
     }
     printf("\n\r");
 }
 
-void ADC_read_all_channels(){
+void adc_read_all_channels(){
     for (uint8_t i = 0; i < 4; i++) {
-        ADC_select_channel(i+4);
+        adc_select_channel(i+4);
         read_data_array[i] = xmem_read(0,ADC);
         _delay_ms(40); 
     }
 }
 
-void ADC_select_channel(uint8_t channel){
+void adc_select_channel(uint8_t channel){
     xmem_write(channel, 0, ADC);
     _delay_ms(40); 
 }
 
-uint8_t ADC_get_joystick_direction(){
-    ADC_read_joystick_position();
+uint8_t adc_get_joystick_direction(){
+    adc_read_joystick_position();
     uint8_t vertical_value = read_data_array[0];
     uint8_t horizontal_value = read_data_array[1];
     enum joystick_direction dir = 0;
@@ -69,7 +69,7 @@ uint8_t ADC_get_joystick_direction(){
     return dir;
 }
 
-void ADC_print_direction(uint8_t direction){
+void adc_print_direction(uint8_t direction){
     enum joystick_direction dir = 0;
     printf("Direction: ");
     switch (direction)   
@@ -95,8 +95,8 @@ void ADC_print_direction(uint8_t direction){
     printf("\n\r");
 }
 
-void ADC_read_joystick_position(){
-    ADC_read_all_channels();
+void adc_read_joystick_position(){
+    adc_read_all_channels();
     uint8_t x_mid = joystick_center_array[0];
     uint8_t y_mid = joystick_center_array[1];
     joystick_current_position[0] = (read_data_array[1]-x_mid)/(255.0-x_mid)*100;
@@ -104,7 +104,7 @@ void ADC_read_joystick_position(){
     joystick_current_position[1] = (read_data_array[0]-y_mid)/(255.0-y_mid)*100;
 }
 
-void ADC_print_current_position(){
+void adc_print_current_position(){
     printf("X: %d, Y: %d \n\r", joystick_current_position[0], joystick_current_position[1]);
 }
 
