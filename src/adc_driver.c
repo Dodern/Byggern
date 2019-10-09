@@ -4,6 +4,7 @@
 #include "adc_driver.h"
 #include "xmem.h"
 #include "uart.h"
+#include "bit_macros.h"
 
 static uint8_t read_data_array[4];
 static uint8_t joystick_center_array[2];
@@ -109,9 +110,28 @@ void adc_print_current_position(){
 }
 
 int adc_is_joystick_button_pressed(){
-    if (PINB == 0) {
+    /* if (PINB == 0) { */
+  if (read_bit(PINB, PINB0)) {
         return true;
     } else {
         return false;
     }
-};
+}
+
+int adc_is_left_button_pressed(){
+  /* if (PINB == 3) { */
+  if (read_bit(PINB, PINB1)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+int adc_is_right_button_pressed(){
+  /* if (PINB == 13) { */
+  if (read_bit(PINB, PINB2)) {
+    return true;
+  } else {
+    return false;
+  }
+}
