@@ -110,28 +110,32 @@ void adc_print_current_position(){
 }
 
 int adc_is_joystick_button_pressed(){
-    /* if (PINB == 0) { */
-  if (read_bit(PINB, PINB0)) {
-        return true;
-    } else {
-        return false;
-    }
+	if (read_bit(PINB, PINB0) == 0) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 int adc_is_left_button_pressed(){
-  /* if (PINB == 3) { */
-  if (read_bit(PINB, PINB1)) {
-    return true;
-  } else {
-    return false;
-  }
+	if (read_bit(PINB, PINB1) == 0) {
+		return false;
+	} else {
+		return true;
+	}
 }
 
 int adc_is_right_button_pressed(){
-  /* if (PINB == 13) { */
-  if (read_bit(PINB, PINB2)) {
-    return true;
-  } else {
-    return false;
-  }
+	if (read_bit(PINB, PINB2) == 0) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+int adc_print_button_states(){
+	int joy_btn = adc_is_joystick_button_pressed();
+	int left_btn = adc_is_left_button_pressed();
+	int right_btn = adc_is_right_button_pressed();
+	printf("Current button states - Joystick: %d  LeftButton: %d  RightButton: %d\n\r", joy_btn, left_btn, right_btn);
 }

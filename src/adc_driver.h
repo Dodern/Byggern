@@ -16,5 +16,6 @@ void adc_print_direction(uint8_t direction);
 int adc_is_joystick_button_pressed();
 int adc_is_left_button_pressed();
 int adc_is_right_button_pressed();
+int adc_print_button_states();
 
 #endif

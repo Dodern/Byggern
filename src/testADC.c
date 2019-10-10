@@ -20,10 +20,12 @@ int main(void){
     // Initiating various devices
 	USART_Init ( MYUBRR );
     xmem_init();
-    ADC_init();
+    adc_init();
 
     while (1) {
-        _delay_ms(15000);
+        _delay_ms(1000);
+        adc_print_all_channels();
+        adc_print_button_states();
         // ADC_select_channel(LEFT_SLIDER); 
         // uint8_t readData = xmem_read( 0, ADC);
         // printf("data has been read: %d\n\r", readData);
