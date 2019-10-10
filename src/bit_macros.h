@@ -1,6 +1,6 @@
 #ifndef BIT_MACROS_H
 #define BIT_MACROS_H
 
-int read_bit(int reg, int pin) {reg & (1 << pin);};
+#define read_bit(reg, pin) (reg & (1 << pin))
 
 #endif
