@@ -25,9 +25,9 @@
     - SPI2X: Double SPI speed bit, SCK frequency doubled while in master mode if set
 - SPDR: SPI data register
 
-# Information
+### Information on ATmega 162
 
-When in master mode:
+#### When in master mode:
 
 Set SS low to start transmission
 Set SPDR to the byte you want to transmit, this starts the clock
@@ -38,7 +38,7 @@ Continue until finished with packet
 Set SS high to end transmission
 
 
-When in slave mode:
+#### When in slave mode:
 
 MISO is tri-stated as long as SS is high
     Data will not be shifted in by clock signals, but can change in the SPDR register
@@ -49,3 +49,21 @@ Data in SPDR will be sent to the master when the master sends to the slave
 
 When receiving data, a received character must beread from the SPI Data Register before the next character has been completely shifted in. Oth-erwise, the first byte is lost.
 
+
+### Information on MCP2515
+
+
+
+
+
+## CAN Controller
+
+#### Initializing the MCP2515
+
+This has to be done in "Configuration mode" that is automatically set at powerup, reset or by setting CANTRL.REQOP bits to '100'. 
+
+#### Loopback Mode
+
+Sets internal transmission of message to the transmit buffer. 
+In this mode the ACK bit is ignored and TXCAN will be in a recessive state.
+Masks and filters can be used in this mode to only allow certain messages into the buffer. Loopback is activated in the CANCTRL register
