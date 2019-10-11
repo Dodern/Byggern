@@ -1,6 +1,8 @@
 #include <avr/io.h>
 
 #include "spi_driver.h"
+#include "bit_macros.h"
+
 
 void spi_master_init(void){
      /* Set MOSI and SCK output, all others input */
@@ -17,15 +19,17 @@ void spi_slave_init(void){
     /* Enable SPI */
     SPCR |= (1<<SPE);
 }
-    
-void spi_master_transmit(char cData){
+
+void spi_transmit(char cData){
     /* Start transmission */
     SPDR = cData;
     /* Wait for transmission complete */
     while(!(SPSR & (1<<SPIF))){};
 }
 
-char spi_slave_receive(void){
+char spi_receive(void){
+    // Have to initiate reading by writing a dummy value to SPDR
+    SPDR = 0x00;
     /* Wait for reception complete */
     while(!(SPSR & (1<<SPIF))){};
     /* Return data register */

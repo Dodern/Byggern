@@ -27,10 +27,20 @@ int main(void){
     //// Setting the direction of test pin
     // set_bit(DDRB, DDB3);
 
+    // to test the spi_receive I set the function to continually 
+    // read the data, and while this occured I simply pulled MISO         
+    // high and low and the print function registered different inputs
     while (1) {
-        clear_bit(PORTB, PORTB4);
-        spi_master_transmit('c');
-        set_bit(PORTB, PORTB4);
+        // clear_bit(PORTB, CAN_SS);
+        // spi_transmit('c');
+        // set_bit(PORTB, CAN_SS);
+        
+        clear_bit(PORTB, CAN_SS);
+        int read = spi_receive();
+        set_bit(PORTB, CAN_SS);
+
+        printf("SPI recieve data: %d\n\r", read);
+
     }
     return 0;
 }
