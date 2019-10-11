@@ -23,21 +23,14 @@ int main(void){
     adc_init();
     oled_init();
 
-   // spi_master_init();
+    spi_master_init();
+    //// Setting the direction of test pin
+    // set_bit(DDRB, DDB3);
 
-    set_bit(PORTB, PINB3);
-    set_bit(DDRB, DDB3);
     while (1) {
-        PINB = 0;
-        _delay_ms(500);
-        PINB = 1;
-        //clear_bit(PINB, PINB3);
-        // spi_master_transmit('c');
-        //set_bit(PINB, PINB3);
-        
-        // clear_bit(PINB, PINB4);
-        // spi_master_transmit('c');
-        // set_bit(PINB, PINB4);
+        clear_bit(PORTB, PORTB4);
+        spi_master_transmit('c');
+        set_bit(PORTB, PORTB4);
     }
     return 0;
 }
