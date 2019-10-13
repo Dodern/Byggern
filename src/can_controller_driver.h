@@ -1,6 +1,18 @@
 #ifndef __CAN_CONTROLLER_DRIVER_H
 #define __CAN_CONTROLLER_DRIVER_H
 
+#include <stdint.h>
+
+struct can_message{
+    unsigned int id;
+    uint8_t length;
+    uint8_t data[8];
+};
+
+//int* can_controller_read_struct(int address);
+void can_controller_read_struct(int address, int* arr, int length);
+void can_controller_write_struct(int address, struct can_message* msg);
+void can_controller_write_struct2(int address, struct can_message* msg);
 int can_controller_init();
 void can_controller_reset(); // Send single command
 

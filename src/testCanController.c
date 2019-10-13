@@ -26,25 +26,32 @@ int main(void){
     oled_init();
 
     can_controller_init();
-    //// Setting the direction of test pin
-    // set_bit(DDRB, DDB3);
 
-    int transmit_buffer = can_controller_read(0b00110110);
-    printf("CAN transmit buffer data preloading : %d\n\r", transmit_buffer);
-    can_controller_write(0b00110110, 0b00010101);
-    transmit_buffer = can_controller_read(0b00110110);
-    printf("CAN transmit buffer data: %d\n\r", transmit_buffer);
-
+    struct can_message message;
+    message.id = 0;
+    message.length = 2;
+    message.data[0] = 0b01010101;
+    message.data[1] = 0b01001111;
+    //can_controller_write_struct(0b00110110, &message);
+    can_controller_write_struct(0b00110110, &message);
     can_controller_write(MCP_TXB0SIDH, 0x00);
     can_controller_write(MCP_TXB0SIDL, 0x00);
     can_controller_write(MCP_TXB0DLC, 0x01);
+    can_controller_request_to_send(MCP_RTS_TX0);
+    int read_data[message.length];
+    can_controller_read_struct(MCP_RXB0D0, &read_data, message.length);
+    printf("CAN recieve data %d\n\r", read_data[0]);
+    printf("CAN recieve data %d\n\r", read_data[1]);
 
-    can_controller_bit_modify(MCP_TXB0CTRL,0b00001000, 0b00001000);
-    // can_controller_request_to_send(MCP_RTS_TX0);
-
-    int read_data = can_controller_read(0b01100110);
-
-    printf("CAN recieve data: %d\n\r", read_data);
+    //int read_data = can_controller_read(0b01100110);
+    //printf("CAN recieve data: %d\n\r", read_data);
+    //int transmit_buffer = can_controller_read(0b00110110);
+    //printf("CAN transmit buffer data preloading : %d\n\r", transmit_buffer);
+    //can_controller_write(0b00110110, 0b00010101);
+    //transmit_buffer = can_controller_read(0b00110110);
+    //printf("CAN transmit buffer data: %d\n\r", transmit_buffer);
+    //can_controller_bit_modify(MCP_TXB0CTRL,0b00001000, 0b00001000);
+    
 
     while (1) {
         

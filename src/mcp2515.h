@@ -154,7 +154,9 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_WAKIF		0x40
 #define MCP_MERRF		0x80
 
-// Custom addresses
+/////////// Custom addresses
+
+// Transmit buffers
 
 #define MCP_TXB0SIDH    0b00110001
 #define MCP_TXB1SIDH    0b01000001
@@ -167,5 +169,23 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_TXB0DLC     0b00110101
 #define MCP_TXB1DLC     0b01000101
 #define MCP_TXB2DLC     0b01010101
+
+#define MCP_TXB0D0     0b00110110
+#define MCP_TXB1D0     0b01000110
+#define MCP_TXB2D0     0b01010110
+
+// Receive buffers
+
+// #define MCP_RXB0SIDH    0b01100001
+// #define MCP_RXB1SIDH    0b01110001
+
+#define MCP_RXB0SIDL    0b01100010
+#define MCP_RXB1SIDL    0b01110010
+
+#define MCP_RXB0DLC     0b01100101
+#define MCP_RXB1DLC     0b01110101
+
+#define MCP_RXB0D0      0b01100110
+#define MCP_RXB1D0      0b01110110
 
 #endif
