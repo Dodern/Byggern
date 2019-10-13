@@ -35,3 +35,11 @@ char spi_receive(void){
     /* Return data register */
     return SPDR;
 }
+
+void spi_start_transmit(){
+    clear_bit(PORTB, CAN_SS);
+}
+
+void spi_end_transmit(){
+    set_bit(PORTB, CAN_SS);
+}

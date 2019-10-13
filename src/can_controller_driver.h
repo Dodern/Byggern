@@ -1,8 +1,8 @@
 #ifndef __CAN_CONTROLLER_DRIVER_H
 #define __CAN_CONTROLLER_DRIVER_H
 
-void can_controller_init();
-void can_controller_reset(); // Send reset-command
+int can_controller_init();
+void can_controller_reset(); // Send single command
 
 int can_controller_read();
 void can_controller_write(int address, int data);
