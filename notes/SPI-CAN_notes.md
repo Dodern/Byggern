@@ -47,7 +47,7 @@ When one byte has been recieved SPIF will be set
 Data in SPDR will be sent to the master when the master sends to the slave
     This can be done before the new data is read
 
-When receiving data, a received character must beread from the SPI Data Register before the next character has been completely shifted in. Oth-erwise, the first byte is lost.
+When receiving data, a received character must be read from the SPI Data Register before the next character has been completely shifted in. Oth-erwise, the first byte is lost.
 
 
 ### Information on MCP2515
@@ -67,3 +67,7 @@ This has to be done in "Configuration mode" that is automatically set at powerup
 Sets internal transmission of message to the transmit buffer. 
 In this mode the ACK bit is ignored and TXCAN will be in a recessive state.
 Masks and filters can be used in this mode to only allow certain messages into the buffer. Loopback is activated in the CANCTRL register
+
+#### Tranmission of data
+
+For each transmit buffer there is a control buffer for each. The first 5 byts are for message identifiers and message arbitration. At a minimum, the TXBnSIDH, TXBnSIDL and TXBnDLC registers must be loaded. If the message is to use extended identifiers, the TXBnEIDm registers must also be loaded and the TXBnSIDL.EXIDE bit set.

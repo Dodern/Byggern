@@ -7,7 +7,7 @@
         - When set to 1 => output
 
 - Using as input:
-    - To use the pin as input the only you need to set is the DDRx.
+    - To use the pin as input you only need to set DDRx.
     - Reading the pins is done through the **PINx** register, NOT PORTx
         - The entire input register can be read by: `i = PINx`
         - Individual pins can be read by: `i = PINx & (1 << pin_numb)`
