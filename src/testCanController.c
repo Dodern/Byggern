@@ -29,19 +29,24 @@ int main(void){
 
     struct can_message message;
     message.id = 0;
-    message.length = 2;
-    message.data[0] = 0b01010101;
-    message.data[1] = 0b01001111;
+    message.length = 3;
+    message.data[0] = 0b01010101; //85
+    message.data[1] = 0b01001111; //79
+    message.data[2] = 0b01001011; //75
     //can_controller_write_struct(0b00110110, &message);
-    can_controller_write_struct(0b00110110, &message);
+    can_controller_write_struct(MCP_TXB0D0, &message);
     can_controller_write(MCP_TXB0SIDH, 0x00);
     can_controller_write(MCP_TXB0SIDL, 0x00);
-    can_controller_write(MCP_TXB0DLC, 0x01);
+    can_controller_write(MCP_TXB0DLC, message.length);
     can_controller_request_to_send(MCP_RTS_TX0);
-    int read_data[message.length];
+
+    int length = can_controller_read(MCP_RXB0DLC);
+    printf("Message length = %d\n\r", length);
+    int read_data[length];
     can_controller_read_struct(MCP_RXB0D0, &read_data, message.length);
-    printf("CAN recieve data %d\n\r", read_data[0]);
-    printf("CAN recieve data %d\n\r", read_data[1]);
+    for (int i = 0; i < message.length; i++){
+        printf("CAN recieve data %d\n\r", read_data[i]);
+    }
 
     //int read_data = can_controller_read(0b01100110);
     //printf("CAN recieve data: %d\n\r", read_data);

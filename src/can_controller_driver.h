@@ -10,7 +10,7 @@ struct can_message{
 };
 
 //int* can_controller_read_struct(int address);
-void can_controller_read_struct(int address, int* arr, int length);
+void can_controller_read_struct(int address, uint8_t* arr, int length);
 void can_controller_write_struct(int address, struct can_message* msg);
 void can_controller_write_struct2(int address, struct can_message* msg);
 int can_controller_init();

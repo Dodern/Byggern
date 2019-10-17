@@ -68,16 +68,17 @@ int can_controller_read(int address) {
 //     return result;
 // }
 
-void can_controller_read_struct(int address, int* arr, int length) {
+void can_controller_read_struct(int address, uint8_t* arr, int length) {
     //int length = 8;//can_controller_read(MCP_RXB0DLC);
     //int result[length];
-    printf("LengdeRead = %d\n\r",length);
+    //printf("LengdeRead = %d\n\r",length);
     spi_start_transmit(); // Select CAN-controller
     
     spi_transmit(MCP_READ); // Send read instruction
     spi_transmit(address); // Send address
     for (uint8_t i = 0; i < length; i++){     
         arr[i] = spi_receive(); // read data
+        //printf("Dette leste jeg: %d\n\r", arr[i]);
     }
     spi_end_transmit(); // Deselect CAN-controller
 }
@@ -97,21 +98,21 @@ void can_controller_write_struct(int address, struct can_message* msg) {
     spi_start_transmit(); // Select CAN-controller
     spi_transmit(MCP_WRITE); // Send write instruction
     spi_transmit(address); // Send address
-    printf("MsgLength %d\n\r", msg->length);
+    //printf("MsgLength %d\n\r", msg->length);
     for (uint8_t i = 0; i < msg->length; i++){ 
         spi_transmit(msg->data[i]); // Send data
-        printf("Dette printa jeg ut: %d\n\r", msg->data[i]);
+        //printf("Dette printa jeg ut: %d\n\r", msg->data[i]);
     }
     spi_end_transmit(); // Deselect CAN-controller
 }
 
-void can_controller_write_struct2(int address, struct can_message* msg) {
-    printf("MsgLength %d\n\r", msg->length);
-    for (uint8_t i = 0; i < msg->length; i++){ 
-        can_controller_write(address + i, msg->data[i]);
-        printf("Dette printa jeg ut: %d\n\r", msg->data[i]);
-    }
-}
+// void can_controller_write_struct2(int address, struct can_message* msg) {
+//     printf("MsgLength %d\n\r", msg->length);
+//     for (uint8_t i = 0; i < msg->length; i++){ 
+//         can_controller_write(address + i, msg->data[i]);
+//         printf("Dette printa jeg ut: %d\n\r", msg->data[i]);
+//     }
+// }
 
 // A function to be used to modify individual bits in a 
 // particular register. This is not available for all registers

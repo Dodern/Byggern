@@ -4,5 +4,6 @@
 #define set_bit(reg, pin) (reg |= (1 << pin))
 #define clear_bit(reg, pin) (reg &= ~(1 << pin))
 #define read_bit(reg, pin) (reg & (1 << pin))
+#define SIZE(x)  (sizeof(x) / sizeof((x)[0]))
 
 #endif
