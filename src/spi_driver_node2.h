@@ -1,7 +1,7 @@
-#ifndef __SPI_DRIVER_H
-#define __SPI_DRIVER_H
+#ifndef __SPI_DRIVER_NODE2_H
+#define __SPI_DRIVER_NODE2_H
 
-#define CAN_SS PORTB0
+#define CAN_SS PORTB7
 
 void spi_master_init(void);
 void spi_slave_init(void);

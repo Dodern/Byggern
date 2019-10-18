@@ -44,6 +44,7 @@ int main(void){
         set_bit(PORTB, CAN_SS);
         printf("SPI recieve data: %d\n\r", read);
         _delay_ms(3000);
+     
 
     }
     return 0;
