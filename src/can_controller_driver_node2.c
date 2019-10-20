@@ -75,7 +75,7 @@ int can_controller_read(int address) {
 //     return result;
 // }
 
-void can_controller_read_struct(int address, uint8_t* arr, int length) {
+void can_controller_read_struct(int address, int8_t* arr, int length) {
     //int length = 8;//can_controller_read(MCP_RXB0DLC);
     //int result[length];
     //printf("LengdeRead = %d\n\r",length);
@@ -83,7 +83,7 @@ void can_controller_read_struct(int address, uint8_t* arr, int length) {
     
     spi_transmit(MCP_READ); // Send read instruction
     spi_transmit(address); // Send address
-    for (uint8_t i = 0; i < length; i++){     
+    for (int8_t i = 0; i < length; i++){     
         arr[i] = spi_receive(); // read data
         //printf("Dette leste jeg: %d\n\r", arr[i]);
     }
