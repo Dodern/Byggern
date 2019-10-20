@@ -105,10 +105,11 @@ void adc_read_joystick_position(){
     joystick_current_position[1] = (read_data_array[0]-y_mid)/(255.0-y_mid)*100;
 }
 
-void adc_get_joystick_position(int8_t* arr){
+void adc_get_joystick_position(uint8_t* arr){
     adc_read_joystick_position();
-    arr[0] = joystick_current_position[0];
-    arr[1] = joystick_current_position[1];
+    arr[0] = read_data_array[1];//joystick_current_position[0];
+    arr[1] = read_data_array[0];
+    printf("X-arr: %d, Y-arr: %d \n\r", arr[0], arr[1]);
 }
 
 void adc_print_current_position(){
