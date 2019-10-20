@@ -1,3 +1,5 @@
+#include <util/delay.h>
+
 #include "uart_node2.h"
 #include "mcp2515.h"
 #include "spi_driver_node2.h"
@@ -46,7 +48,7 @@ int can_controller_read(int address) {
     int result;
 
     spi_start_transmit(); // Select CAN-controller
-    
+    _delay_us(1);
     spi_transmit(MCP_READ); // Send read instruction
     spi_transmit(address); // Send address
     result = spi_receive(); // Read result

@@ -1,6 +1,6 @@
 # List all source files to be compiled; separate with space
 # SOURCE_FILES := uart.c  spi_driver.c can_controller_driver.c can_driver.c testPrint.c
-SOURCE_FILES := uart_node2.c spi_driver_node2.c can_controller_driver_node2.c can_driver_node2.h testCanNodes2.c
+SOURCE_FILES := uart_node2.c spi_driver_node2.c can_controller_driver_node2.c can_driver_node2.c testCanNodes2.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes

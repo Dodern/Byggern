@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "spi_driver_node2.h"
 #include "bit_macros.h"
@@ -38,6 +39,8 @@ char spi_receive(void){
 
 void spi_start_transmit(){
     clear_bit(PORTB, CAN_SS);
+    //_delay_ms(1);
+    //printf("CAN_SS = %d \n\r", CAN_SS);
 }
 
 void spi_end_transmit(){
