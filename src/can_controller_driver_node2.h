@@ -6,11 +6,11 @@
 struct can_message{
     unsigned int id;
     uint8_t length;
-    int8_t data[8];
+    uint8_t data[8];
 };
 
 //int* can_controller_read_struct(int address);
-void can_controller_read_struct(int address, int8_t* arr, int length);
+void can_controller_read_struct(int address, uint8_t* arr, int length);
 void can_controller_write_struct(int address, struct can_message* msg);
 void can_controller_write_struct2(int address, struct can_message* msg);
 int can_controller_init();

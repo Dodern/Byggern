@@ -2,12 +2,14 @@
 #include "can_driver.h"
 #include "mcp2515.h"
 
-void can_send_message(int id, int length, int* arr, int transmit_line){ 
+void can_send_message(int id, int length, uint8_t* arr, int transmit_line){ 
     struct can_message message;
     message.id = id;
     message.length = length;
     for (int i = 0; i < length; i++){
+        printf("Arr i,%d = %d\n\r", i , arr[i]);
         message.data[i] = arr[i];
+        printf("Messsage.data i,%d = %d\n\r", i , message.data[i]);
     }
     int transmit_address = 0;
     int id_high_address = 0;

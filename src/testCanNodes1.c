@@ -30,9 +30,9 @@ int main(void){
 
     can_controller_init();
 
-    int arr[] = {0b01010101, 0b01001111, 0b01001011, 0b0111100}; //85, 79, 75, 60
-    int arr2[] = {0b01011101, 0b0100101, 0b01101011, 0b0111110}; //93, 37, 107, 62
-    int8_t arr3[] = {0,0};
+    uint8_t arr[] = {0b01010101, 0b01001111, 0b01001011, 0b0111100}; //85, 79, 75, 60
+    uint8_t arr2[] = {0b01011101, 0b0100101, 0b01101011, 0b0111110}; //93, 37, 107, 62
+    uint8_t arr3[] = {0,0};
     int length = SIZE(arr);
     int length2 = SIZE(arr2);
     int length3 = SIZE(arr3);

@@ -2,7 +2,7 @@
 #include "can_driver_node2.h"
 #include "mcp2515.h"
 
-void can_send_message(int id, int length, int* arr, int transmit_line){ 
+void can_send_message(int id, int length, uint8_t* arr, int transmit_line){ 
     struct can_message message;
     message.id = id;
     message.length = length;
