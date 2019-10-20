@@ -6,6 +6,7 @@
 #include <avr/io.h>
 
 #include "bit_macros.h"
+// #include "uart_node2.h"
 #include "uart.h"
 #include "xmem.h"
 #include "adc_driver.h"
@@ -16,15 +17,16 @@
 #include "can_driver.h"
 
 #define FOSC 4915200 // Clock Speed
+// #define FOSC 16000000 // Clock Speed
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 
 int main(void){
     // Initiating various devices
 	USART_Init ( MYUBRR );
-    xmem_init();
-    adc_init();
-    oled_init();
+    // xmem_init();
+    // adc_init();
+    // oled_init();
 
     // can_controller_init();
 
@@ -36,11 +38,14 @@ int main(void){
     // for (int i = 0; i< length; i++){
     //     printf("CAN recieve data %d\n\r", message.data[i]);
     // }
+    printf("I can print! \n\r");
     #if defined (__AVR_ATmega162__)
         printf("I have detected that we are on Node1\n\r");
     #elif defined (__AVR_ATmega2560__)
         printf("I have detected that we are on Node2\n\r");
     #endif
+    printf("After statement! \n\r");
+    
     while (1) {};
     return 0;
 }
