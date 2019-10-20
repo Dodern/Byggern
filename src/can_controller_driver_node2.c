@@ -11,7 +11,7 @@ int can_controller_init(){
 
     spi_master_init(); // Initialize SPI
     can_controller_reset(); // Send reset-command
-
+    _delay_ms(100);
     // Self-test to see if in Configuration Mode
     int reg_canstat = can_controller_read(MCP_CANSTAT);
     printf("reg_canstat = %d\n\r", reg_canstat);
@@ -27,6 +27,7 @@ int can_controller_init(){
     //can_controller_bit_modify(MCP_CANCTRL,0b11100000, MODE_LOOPBACK);
     can_controller_bit_modify(MCP_CANCTRL,0b11100000, MODE_NORMAL);
     printf("MCP2515 is now in normal mode after reset!\n\r");
+    can_controller_bit_modify(MCP_RXB0CTRL, 0b00000100, 1);
 
     return 0;
 }
@@ -48,7 +49,7 @@ int can_controller_read(int address) {
     int result;
 
     spi_start_transmit(); // Select CAN-controller
-    _delay_us(1);
+    //_delay_us(54);
     spi_transmit(MCP_READ); // Send read instruction
     spi_transmit(address); // Send address
     result = spi_receive(); // Read result

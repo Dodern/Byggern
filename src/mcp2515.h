@@ -156,6 +156,9 @@ Copyright 2003 Kimberly Otten Software Consulting
 
 /////////// Custom addresses
 
+// ID Masks for CAN
+#define MCP_MASK_SIDL   0b11100000
+
 // Transmit buffers
 
 #define MCP_TXB0SIDH    0b00110001

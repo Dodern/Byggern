@@ -23,13 +23,25 @@ int main(void){
     can_controller_init();
 
     struct can_message message;
+    struct can_message message2;
 
     while (1) {
     message = can_read_message(0);
+    //message2 = can_read_message(0);
+    
     for (int i = 0; i < message.length; i++){
-         printf("CAN receive data %d\n\r", message.data[i]);
+        printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
+        //printf("CAN receive buffer 1 data %d\n\r", message2.data[i]);
     }
-    _delay_ms(30000);
+    printf("\n");
+    _delay_ms(10000);
+    // message2 = can_read_message(0);
+    //    for (int i = 0; i < message.length; i++){
+    //     //printf("CAN receive buffer 0 data %d\n\n\r", message.data[i]);
+    //     printf("CAN receive buffer 1 data %d\n\r", message2.data[i]);
+    // }
+    // printf("\n");
+    //_delay_ms(30000);
     }
     return 0;
 }

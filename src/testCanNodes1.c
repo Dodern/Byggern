@@ -28,12 +28,16 @@ int main(void){
 
     can_controller_init();
 
-    int arr[] = {0b01010101, 0b01001111, 0b01001011, 0b0111100, 0b1111110, 0b0000111, 0b1110000, 0b0101001}; //85, 79, 75, 60, 126, 7, 112, 41
+    int arr[] = {0b01010101, 0b01001111, 0b01001011, 0b0111100}; //85, 79, 75, 60
+    int arr2[] = {0b01011101, 0b0100101, 0b01101011, 0b0111110}; //93, 37, 107, 62
     int length = SIZE(arr);
+    int length2 = SIZE(arr2);
 
     while (1) {
     can_send_message(0, length, &arr, 0);
-    _delay_ms(3000);
+    _delay_ms(50000);
+    can_send_message(0b1, length2, &arr2, 1);
+    _delay_ms(50000);
     }
     return 0;
 }
