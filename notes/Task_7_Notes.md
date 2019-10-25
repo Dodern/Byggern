@@ -37,5 +37,16 @@ Things to do:
 	- Create driver to implement PWM (Timer driver)
 	- Read up on interrupts and implement the timer interrupt
 	- Create PWM driver that calculates duty cycle for motor driver
-		○ Implement safety features to avoid going out of range!
+	- Implement safety features to avoid going out of range!
 	- Connect the servo 
+		- Use the joystick position to control the servo position
+	- Install IR-LED and IR-Photodiode
+	- Connect the IR diodes to the small breadboard
+		○ For detecting if the beam is blocked
+		○ Make a simple RC-low-pass filter
+	- Connect the small breadboard to the PORTF on the Arduino to use the ADC
+	- Create a driver to read the IR signal
+		○ Implement a digital filter
+			§ Threshold settings
+	- Create function for counting score
+
