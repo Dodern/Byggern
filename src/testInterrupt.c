@@ -26,7 +26,14 @@
 #define ISC00_BIT 0
 #define ISC01_BIT 1
 
+volatile int interrupt_count = 0;
+
 ISR(INT0_vect){
+  interrupt_count++;
+  GIFR |= 0;
+}
+
+ISR(INT1_vect){
   interrupt_count++;
 }
 
@@ -40,13 +47,11 @@ int main(void){
 
     //**** New Code 
 
-    volatile int Interrupt_count = 0;
 
     //Enabling direction of interrupts
     clear_bit(DDRD, DDD2); //not necessary, but to be sure
 
     //Enabling interrupts;
-    sei(); // This sets the Global Interrupt Pin in SREG
     /* set_bit(SREG, SREG_I); */
     set_bit(GICR, INT0_BIT);
     ////*** Have to check if the interrupt pin on MCP is active high or active low.
@@ -57,6 +62,7 @@ int main(void){
     clear_bit(MCUCR, ISC00);
     set_bit(MCUCR, ISC01);
     ////*** Have to check if the interrupt pin on MCP is active high or active low.
+    sei(); // This sets the Global Interrupt Pin in SREG
 
     while (1) {
 
