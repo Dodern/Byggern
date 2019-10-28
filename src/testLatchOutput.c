@@ -23,14 +23,14 @@ int main(void){
 
 
     uint8_t number = 50;
-    // SRAM_test();
+    SRAM_test();
 
     while (1) {
-        xmem_write(number, 500, SRAM);
-        printf("data has been written\n\r");
-        _delay_ms(3000);
-        uint16_t data = xmem_read(500, SRAM);
-        printf("data has been read: %d\n\r", data);
+        // xmem_write(number, 500, SRAM);
+        // printf("data has been written\n\r");
+        // _delay_ms(3000);
+        // uint16_t data = xmem_read(500, SRAM);
+        // printf("data has been read: %d\n\r", data);
     };
 
 	return 0;
