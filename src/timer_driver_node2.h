@@ -5,5 +5,6 @@
 #include <stdio.h>
 
 void timer_init();
+void timer_input(uint8_t pwm_input);
 
 #endif
