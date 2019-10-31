@@ -1,7 +1,11 @@
 #ifndef __SPI_DRIVER_H
 #define __SPI_DRIVER_H
 
-#define CAN_SS PORTB4
+#if defined (__AVR_ATmega162__)
+    #define CAN_SS PORTB4
+#elif defined (__AVR_ATmega2560__)
+    #define CAN_SS PORTB7
+#endif
 
 void spi_master_init(void);
 void spi_slave_init(void);

@@ -3,7 +3,7 @@
 #include <util/delay.h>
 #include <stdint.h>
 
-#include "uart_node2.h" // #include "uart.h"
+#include "uart.h" // #include "uart.h"
 
 #define FOSC 16000000 //4915200 // Clock Speed
 #define BAUD 9600
