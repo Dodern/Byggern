@@ -1,6 +1,6 @@
 node1_make: 
 	# make -f node1.mkNOode1s1
-	make -f node1.mk 
+	make -f node1Folder.mk 
 
 node1_flash: 
 	# make -f node1.mk

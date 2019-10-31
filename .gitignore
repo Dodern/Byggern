@@ -1,5 +1,6 @@
 # Don't track these folders
 src/build/
+src/build_node1/
 src/build_node2/
 VHDL/ghdl
 .vscode
