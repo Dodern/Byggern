@@ -1,5 +1,5 @@
-#ifndef __CAN_CONTROLLER_DRIVER_NODE2_H
-#define __CAN_CONTROLLER_DRIVER_NODE2_H
+#ifndef __CAN_CONTROLLER_DRIVER_H
+#define __CAN_CONTROLLER_DRIVER_H
 
 #include <stdint.h>
 

@@ -1,4 +1,4 @@
-#include "uart_node2.h"
+#include "uart.h"
 
 
 void USART_Init( unsigned int ubrr ) {

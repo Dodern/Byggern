@@ -1,5 +1,5 @@
-#ifndef TIMER_DRIVER_NODE2_H
-#define TIMER_DRIVER_NODE2_H
+#ifndef TIMER_DRIVER_H
+#define TIMER_DRIVER_H
 
 #include <avr/io.h>
 #include <stdio.h>

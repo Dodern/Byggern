@@ -21,9 +21,9 @@ endif
 # ADDITIONAL_DIRS := node1:test:common
 # VPATH := $(ADDITIONAL_DIRS)
 # vpath %.h $(ADDITIONAL_DIRS)
-VPATH := node1:test:common
+VPATH := node1:common:test
 # vpath %.h /node1
-INCLUDE := node1 test
+INCLUDE := node1 common test
 BUILD_DIR := build_node1
 TARGET_CPU := atmega162
 TARGET_DEVICE := m162

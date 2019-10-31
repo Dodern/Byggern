@@ -1,6 +1,6 @@
 #include "bit_macros.h"
-#include "timer_driver_node2.h"
-#include "uart_node2.h"
+#include "timer_driver.h"
+#include "uart.h"
 
 
 void timer_init(){

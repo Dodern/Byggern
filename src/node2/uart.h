@@ -1,5 +1,5 @@
-#ifndef UART_NODE2_DRIVER_H
-#define UART_NODE2_DRIVER_H
+#ifndef UART_DRIVER_H
+#define UART_DRIVER_H
 
 #include <avr/io.h>
 #include <stdio.h>

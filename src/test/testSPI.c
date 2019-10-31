@@ -5,11 +5,11 @@
 // #include <stdbool.h>
 #include <avr/io.h>
 
-#include "uart_node2.h" //#include "uart.h"
+#include "uart.h" //#include "uart.h"
 //#include "xmem.h"
 //#include "adc_driver.h"
 //#include "oled_driver.h"
-#include "spi_driver_node2.h" //#include "spi_driver.h"
+#include "spi_driver.h" //#include "spi_driver.h"
 #include "bit_macros.h"
 
 #define FOSC 16000000 //4915200 // Clock Speed

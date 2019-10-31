@@ -1,7 +1,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "spi_driver_node2.h"
+#include "spi_driver.h"
 #include "bit_macros.h"
 
 

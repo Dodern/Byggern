@@ -1,5 +1,5 @@
-#ifndef __SPI_DRIVER_NODE2_H
-#define __SPI_DRIVER_NODE2_H
+#ifndef __SPI_DRIVER_H
+#define __SPI_DRIVER_H
 
 #define CAN_SS PORTB7
 

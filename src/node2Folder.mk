@@ -1,13 +1,11 @@
 # List all source files to be compiled; separate with space
+# SOURCE_FILES := uart.c  spi_driver.c can_controller_driver.c can_driver.c testPrint.c
 SOURCE_FILES := uart.c \
-				xmem.c \
-				adc_driver.c \
-				oled_driver.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				testSRAM.c \
-				testLatchOutput.c
+				timer_driver.c \
+				testTimer_node2.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes
@@ -18,15 +16,12 @@ ifeq ($(PROGRAM_WITH_JTAG), yes)
 	PROGRAMMER := atmelice
 endif
 
-# ADDITIONAL_DIRS := node1:test:common
-# VPATH := $(ADDITIONAL_DIRS)
-# vpath %.h $(ADDITIONAL_DIRS)
-VPATH := node1:test:common
-# vpath %.h /node1
-INCLUDE := node1 test
-BUILD_DIR := build
-TARGET_CPU := atmega162
-TARGET_DEVICE := m162
+VPATH := node2:common:test
+INCLUDE := node2 common test
+BUILD_DIR := build_node2
+# TARGET_CPU := atmega2560
+TARGET_CPU := atmega2560
+TARGET_DEVICE := m2560
 
 CC := avr-gcc
 CFLAGS := -O -std=c11 -mmcu=$(TARGET_CPU) $(addprefix -I ,$(INCLUDE))

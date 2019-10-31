@@ -6,11 +6,11 @@
 #include <avr/io.h>
 
 #include "bit_macros.h"
-#include "uart_node2.h"
-#include "spi_driver_node2.h"
+#include "uart.h"
+#include "spi_driver.h"
 #include "mcp2515.h"
-#include "can_controller_driver_node2.h"
-#include "can_driver_node2.h"
+#include "can_controller_driver.h"
+#include "can_driver.h"
 
 #define FOSC 16000000 // Clock Speed
 #define BAUD 9600

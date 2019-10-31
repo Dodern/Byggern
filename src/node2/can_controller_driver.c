@@ -1,9 +1,9 @@
 #include <util/delay.h>
 
-#include "uart_node2.h"
+#include "uart.h"
 #include "mcp2515.h"
-#include "spi_driver_node2.h"
-#include "can_controller_driver_node2.h"
+#include "spi_driver.h"
+#include "can_controller_driver.h"
 
 // Initiates the controller by starting SPI interface, Resets the controller,
 // and ensure that the controller is set up in Configuration Mode.
