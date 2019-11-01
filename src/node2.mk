@@ -4,8 +4,12 @@ SOURCE_FILES := uart.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				timer_driver.c \
-				testTimer_node2.c
+				adc_driver.c \
+				testADC_node2.c
+				# timer_driver.c\
+				# game_logic_driver.c\
+				# testGameLogic.c
+				
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes
