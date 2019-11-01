@@ -1,3 +1,5 @@
+#include <util/delay.h>
+
 #include "uart.h"
 #include "mcp2515.h"
 #include "spi_driver.h"
@@ -9,7 +11,7 @@ int can_controller_init(){
 
     spi_master_init(); // Initialize SPI
     can_controller_reset(); // Send reset-command
-
+    _delay_ms(100);
     // Self-test to see if in Configuration Mode
     int reg_canstat = can_controller_read(MCP_CANSTAT);
     printf("reg_canstat = %d\n\r", reg_canstat);

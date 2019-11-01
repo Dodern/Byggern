@@ -12,22 +12,42 @@ void timer_init(){
     // Set TOP to 40 000 -> Sets period to 20 ms
     ICR1 = 0b1001110001000000;
     // Set OC1A as output
-    set_bit(DDRB, PORT5); // Sjekk om dette stemmer PIN 5 ? 
+    set_bit(DDRB, PB5);
     // Set servo to 0
     timer_input(135);
 }
 
+void timer3_init(){
+    //clear_bit(PORTE, PE3); // Set OC3A to 0
+    //set_bit(TCCR3A, COM3A0); // Clear OC3A on compare match (Set to low)
+    set_bit(TCCR3A, COM3A1); // Clear OC3A on compare match (Set to low)
+    //set_bit(TCCR3A, WGM30); // Clear timer on compare match bit 0 (With TOP = ICR3)
+    set_bit(TCCR3B, WGM32); // Clear timer on compare match bit 2 
+    //set_bit(TCCR3B, WGM33); // Clear timer on compare match bit 3
+    set_bit(TCCR3B, CS32); // Clk active with prescaling to clk/256
+    OCR3A = 0b1111010000100100;
+    //ICR3 = 0b1111010000100100; // Set TOP to 62500 (1 second)
+    set_bit(DDRE, PE3); // Set OC3A as output
+    printf("TCCR3B = %d\n\r", TCCR3B);
+}
+
+void timer3_reset(){
+    set_bit(PORTE, PE3); // Set OC3A to 1
+    TCNT3 = 0b0;
+    printf("OC3A = %d\n\r", read_bit(PORTE, PE3));
+}
+
 void timer_input(uint8_t pwm_input){
     // Set dutycyle to between 0.045 (0.9 ms, to the left) and 0.105 (2.1 ms, to the right)
-    printf("pwm_input = %d\n\r", pwm_input);
+    //printf("pwm_input = %d\n\r", pwm_input);
     float dutycycle = 0.045 + (255-pwm_input)*0.000235;
     if (pwm_input > 255 || dutycycle > 0.105){
         dutycycle = 0.105;
     } else if (pwm_input < 0 || dutycycle < 0.045){
         dutycycle = 0.045;
     }
-    printf("dutycycle = %d\n\r", (int) (dutycycle*1000));
+    //printf("dutycycle = %d\n\r", (int) (dutycycle*1000));
     // Scaling the dutycycle in relation to the TOP value
     OCR1A = (int) (dutycycle * ICR1);
-    printf("OCR1A = %d\n\r", OCR1A);
+    //printf("OCR1A = %d\n\r", OCR1A);
 }
