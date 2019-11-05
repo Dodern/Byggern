@@ -9,8 +9,10 @@ void USART_Init( unsigned int ubrr ) {
 	/* Set frame format: 8data, 2stop bit */
 	#if defined (__AVR_ATmega162__)
 		UCSR0C = (1 << URSEL0)|(1 << USBS0)|(3 << UCSZ00);
+		printf("uart init recognized node1");
     #elif defined (__AVR_ATmega2560__)
 		UCSR0C = (1 << USBS0)|(3 << UCSZ00);
+		printf("uart init recognized node2");
     #endif
 	fdevopen(USART_Transmit, USART_Receive); 
 }

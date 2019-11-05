@@ -6,9 +6,10 @@ SOURCE_FILES := uart.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				testTimer_node1.c
-				# testSRAM.c \
-				# testLatchOutput.c
+				testSRAM.c \
+				testLatchOutput.c
+				# testCanNodes1.c
+				# testTimer_node1.c
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
 PROGRAM_WITH_JTAG := yes

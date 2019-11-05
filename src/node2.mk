@@ -5,7 +5,8 @@ SOURCE_FILES := uart.c \
 				can_controller_driver.c \
 				can_driver.c \
 				adc_driver.c \
-				testADC_node2.c
+				testCanNodes2.c
+				# testADC_node2.c
 				# timer_driver.c\
 				# game_logic_driver.c\
 				# testGameLogic.c

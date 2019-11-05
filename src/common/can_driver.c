@@ -1,6 +1,7 @@
 #include "can_controller_driver.h"
 #include "can_driver.h"
 #include "mcp2515.h"
+#include "uart.h"
 
 void can_send_message(int id, int length, uint8_t* arr, int transmit_line){ 
     struct can_message message;

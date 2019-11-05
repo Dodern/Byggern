@@ -26,6 +26,8 @@ int main(void){
     adc_init();
     oled_init();
 
+    oled_reset();
+    oled_print_picture();
     
 
     can_controller_init();
