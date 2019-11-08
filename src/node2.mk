@@ -5,11 +5,13 @@ SOURCE_FILES := uart.c \
 				can_controller_driver.c \
 				can_driver.c \
 				adc_driver.c \
-				testCanNodes2.c
-				# testADC_node2.c
-				# timer_driver.c\
-				# game_logic_driver.c\
+				timer_driver.c\
+				game_logic_driver.c\
+				testDay7.c
+				# testTimer_node2.c
+				# testCanNodes2.c
 				# testGameLogic.c
+				# testADC_node2.c
 				
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used

@@ -11,6 +11,10 @@ node1_clean:
 	# make -f node1.mk
 	make clean -f node1.mk 
 
+node1_fuse: 
+	# make -f node1.mk
+	make fuse -f node1.mk 
+
 node2_make:
 	# make -f node2.mk
 	make -f node2.mk 
