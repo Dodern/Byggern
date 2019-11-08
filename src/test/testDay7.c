@@ -22,13 +22,19 @@ int main(void){
     can_controller_init();
     timer_init();
     adc_init();
-    // timer3_init();
 
+    struct can_message message;
     while(1){
+        // PWM signal
+        message = can_read_message(0);
+        for (int i = 0; i < message.length; i++){
+        printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
+        }
+        timer_input(message.data[0]);
+
+        //adc and game logic
         game_logic_update_score();
         _delay_ms(5000);
-        // printf("TCNT3 = %d\n\r", TCNT3);
-        // printf("TCNT1 = %d\n\r", TCNT1);
     }
     return 0;
 }

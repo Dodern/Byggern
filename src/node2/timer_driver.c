@@ -1,7 +1,11 @@
+#include <stdlib.h>
+
 #include "bit_macros.h"
 #include "timer_driver.h"
 #include "uart.h"
 
+
+static uint8_t prev_pwm_input = 0;
 
 void timer_init(){
     set_bit(TCCR1A, COM1A1); // Clear OCnA/OCnB/OCnC on compare match, set OCnA/OCnB/OCnC at BOTTOM (non-inverting mode)
@@ -38,16 +42,22 @@ void timer3_reset(){
 }
 
 void timer_input(uint8_t pwm_input){
-    // Set dutycyle to between 0.045 (0.9 ms, to the left) and 0.105 (2.1 ms, to the right)
-    //printf("pwm_input = %d\n\r", pwm_input);
-    float dutycycle = 0.045 + (255-pwm_input)*0.000235;
-    if (pwm_input > 255 || dutycycle > 0.105){
-        dutycycle = 0.105;
-    } else if (pwm_input < 0 || dutycycle < 0.045){
-        dutycycle = 0.045;
+    printf("pwm input %d\n\r", pwm_input);
+    printf("previous pwm input %d\n\r", pwm_input);
+    if (abs(prev_pwm_input - pwm_input) > 20){
+        printf("inside if statement\n\r");
+        // Set dutycyle to between 0.045 (0.9 ms, to the left) and 0.105 (2.1 ms, to the right)
+        //printf("pwm_input = %d\n\r", pwm_input);
+        float dutycycle = 0.045 + (255-pwm_input)*0.000235;
+        if (pwm_input > 255 || dutycycle > 0.105){
+            dutycycle = 0.105;
+        } else if (pwm_input < 0 || dutycycle < 0.045){
+            dutycycle = 0.045;
+        }
+        //printf("dutycycle = %d\n\r", (int) (dutycycle*1000));
+        // Scaling the dutycycle in relation to the TOP value
+        OCR1A = (int) (dutycycle * ICR1);
+        //printf("OCR1A = %d\n\r", OCR1A);
+        prev_pwm_input = pwm_input;
     }
-    //printf("dutycycle = %d\n\r", (int) (dutycycle*1000));
-    // Scaling the dutycycle in relation to the TOP value
-    OCR1A = (int) (dutycycle * ICR1);
-    //printf("OCR1A = %d\n\r", OCR1A);
 }

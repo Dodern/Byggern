@@ -23,7 +23,7 @@ int main(void){
     adc_init();
 
     while (1) {
-        _delay_ms(1000);
+        _delay_ms(6000);
         adc_print_all_channels();
         adc_print_button_states();
         // ADC_select_channel(LEFT_SLIDER); 
