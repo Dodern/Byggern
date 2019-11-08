@@ -16,8 +16,11 @@ void SRAM_test(void) {
     srand(seed);
     for (uint16_t i = 0; i < ext_ram_size; i++) {
         uint8_t some_value = i+10;
+        // uint8_t some_value = rand();
         ext_ram[i] = some_value;
         uint8_t retreived_value = ext_ram[i];
+        // xmem_write(some_value, i, 0x1800);
+        // uint8_t retreived_value = xmem_read(i, 0x1800);
         if (retreived_value != some_value) {
             printf("Write phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i,
             retreived_value, some_value);
@@ -30,9 +33,13 @@ void SRAM_test(void) {
     printf("Seed is: %d\n\r", seed);
     for (uint16_t i = 0; i < ext_ram_size; i++) {
         uint8_t some_value = i+10;
+        // printf("some value %d\n\r", some_value);
+        // uint8_t some_value = rand();
         uint8_t retreived_value = ext_ram[i];
+        // uint8_t retreived_value = xmem_read(i, 0x1800);
+        // printf("retreived value %d\n\r", retreived_value);
         if (retreived_value != some_value) {
-            printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
+            // printf("Retrieval phase error: ext_ram[%4d] = %02X (should be %02X)\n\r", i, retreived_value, some_value);
             retrieval_errors++;
         }
     }
