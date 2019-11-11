@@ -15,6 +15,7 @@ void adc_select_channel(uint8_t channel);
 uint8_t adc_get_joystick_direction();
 void adc_read_joystick_position();
 void adc_get_joystick_position(uint8_t* arr);
+uint8_t adc_get_right_slider_position(void);
 void adc_print_current_position();
 void adc_print_direction(uint8_t direction);
 

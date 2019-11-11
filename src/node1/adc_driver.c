@@ -112,6 +112,11 @@ void adc_get_joystick_position(uint8_t* arr){
     printf("X-arr: %d, Y-arr: %d \n\r", arr[0], arr[1]);
 }
 
+uint8_t adc_get_right_slider_position(void){
+    adc_read_joystick_position();
+    return read_data_array[3];//joystick_current_position[0];
+}
+
 void adc_print_current_position(){
     adc_read_joystick_position();
     printf("X: %d, Y: %d \n\r", joystick_current_position[0], joystick_current_position[1]);
