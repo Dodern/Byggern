@@ -5,9 +5,12 @@ SOURCE_FILES := uart.c \
 				can_controller_driver.c \
 				can_driver.c \
 				adc_driver.c \
-				servo_driver.c\
-				game_logic_driver.c\
-				testDay7.c
+				servo_driver.c \
+				TWI_driver.c \
+				game_logic_driver.c \
+				motor_driver.c \
+				testMotor.c
+				# testDay7.c
 				# testTimer_node2.c
 				# testCanNodes2.c
 				# testGameLogic.c
