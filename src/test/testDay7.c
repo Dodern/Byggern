@@ -8,7 +8,7 @@
 #include "mcp2515.h"
 #include "can_controller_driver.h"
 #include "can_driver.h"
-#include "timer_driver.h"
+#include "servo_driver.h"
 #include "game_logic_driver.h"
 #include "adc_driver.h"
 
@@ -20,7 +20,7 @@
 int main(void){
     USART_Init ( MYUBRR );
     can_controller_init();
-    timer_init();
+    servo_init();
     adc_init();
 
     struct can_message message;
@@ -30,7 +30,7 @@ int main(void){
         for (int i = 0; i < message.length; i++){
         printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
         }
-        timer_input(message.data[0]);
+        servo_input(message.data[0]);
 
         //adc and game logic
         game_logic_update_score();

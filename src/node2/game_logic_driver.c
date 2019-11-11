@@ -4,7 +4,7 @@
 #include "uart.h"
 #include "adc_driver.h"
 #include "game_logic_driver.h"
-#include "timer_driver.h"
+#include "servo_driver.h"
 #include "bit_macros.h"
 
 static uint8_t game_score;

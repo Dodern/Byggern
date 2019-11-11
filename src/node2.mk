@@ -5,7 +5,7 @@ SOURCE_FILES := uart.c \
 				can_controller_driver.c \
 				can_driver.c \
 				adc_driver.c \
-				timer_driver.c\
+				servo_driver.c\
 				game_logic_driver.c\
 				testDay7.c
 				# testTimer_node2.c
