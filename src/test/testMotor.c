@@ -42,33 +42,46 @@ int main(void){
     unsigned char TWI_state = 0;
     struct can_message message;
     int16_t encoder = 0;
+    int center_value = 127;
     while(1){
-        stop_motor();
+        // stop_motor();
         // uint16_t encoder = read_encoder();
         // printf("Encoder = %d\n\r", encoder);
-        printf("MJ_EN = %d\n\r", MJ1_EN);
-        printf("MJ1 = %d\n\r", PORT_MJ1);
+        // printf("MJ_EN = %d\n\r", MJ1_EN);
+        // printf("MJ1 = %d\n\r", PORT_MJ1);
 
-        // message = can_read_message(0);
+
+        _delay_ms(1000);
+        message = can_read_message(0);
+        // printf("CAN receive buffer 0 data: %d, %d\n\r", message.data[0], message.data[1]);
+        int horizontal_value =(message.data[0]-center_value)/(255.0-center_value)*100;
+        printf("Horizontal value: %d\n\r", horizontal_value);
         // for (int i = 0; i < message.length; i++){
         // printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
         // }
-        _delay_ms(1000);
-        // encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        set_motor_direction(0);
-        send_i2c_motor_input(120);
-        // encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        _delay_ms(50000);
-        // encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        set_motor_direction(1);
-        send_i2c_motor_input(70);
-        encoder = read_encoder();
-        printf("Encoder = %d\n\r", encoder);
-        _delay_ms(50000);
 
+        _delay_ms(1000);
+        if (horizontal_value < 0) {
+            set_motor_direction(0);
+        } else {
+            set_motor_direction(1);
+        }
+        
+        // encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
+        // set_motor_direction(0);
+        
+        send_i2c_motor_input(abs( horizontal_value ));
+        // encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
+        // _delay_ms(50000);
+        // encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
+        // set_motor_direction(1);
+        // send_i2c_motor_input(70);
+        encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
+        // _delay_ms(50000);
 
         // set_motor_direction(0);
         // _delay_ms(1000);

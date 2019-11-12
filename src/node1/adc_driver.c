@@ -96,24 +96,38 @@ void adc_print_direction(uint8_t direction){
     printf("\n\r");
 }
 
+int joystick_percent_formula(int read_index, uint8_t center_value){
+    int data =(read_data_array[read_index]-center_value)/(255.0-center_value)*100;
+    printf("data: %d\n\r", data);
+    return data;
+}
+
 void adc_read_joystick_position(){
     adc_read_all_channels();
     uint8_t x_mid = joystick_center_array[0];
     uint8_t y_mid = joystick_center_array[1];
     joystick_current_position[0] = (read_data_array[1]-x_mid)/(255.0-x_mid)*100;
-    //joystick_current_position[0] = (read_data_array[1]-x_mid)/(255.0-x_mid)*100;
+    // joystick_current_position[0] = joystick_percent_formula(0, x_mid);
     joystick_current_position[1] = (read_data_array[0]-y_mid)/(255.0-y_mid)*100;
+    // joystick_current_position[1] = joystick_percent_formula(1, y_mid);
+}
+
+void adc_get_joystick_percent_position(uint8_t* arr){
+    adc_read_joystick_position();
+    arr[0] = joystick_current_position[0];//joystick_current_position[0];
+    arr[1] = joystick_current_position[1];
+    // printf("X-arr: %d, Y-arr: %d \n\r", arr[0], arr[1]);
 }
 
 void adc_get_joystick_position(uint8_t* arr){
-    adc_read_joystick_position();
+    adc_read_all_channels();
     arr[0] = read_data_array[1];//joystick_current_position[0];
     arr[1] = read_data_array[0];
-    printf("X-arr: %d, Y-arr: %d \n\r", arr[0], arr[1]);
+    // printf("X-arr: %d, Y-arr: %d \n\r", arr[0], arr[1]);
 }
 
 uint8_t adc_get_right_slider_position(void){
-    adc_read_joystick_position();
+    adc_read_all_channels();
     return read_data_array[3];//joystick_current_position[0];
 }
 
