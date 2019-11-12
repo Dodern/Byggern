@@ -39,7 +39,7 @@ ISR(INT1_vect){
 
 int main(void){
     // Initiating various devices
-	USART_Init ( MYUBRR );
+    USART_Init ( MYUBRR );
     xmem_init();
     adc_init();
     oled_init();
@@ -66,8 +66,8 @@ int main(void){
 
     while (1) {
 
-      printf("Interrupt counter is now at %d \n\r", interrupt_count);
-      _delay_ms(2000);
+        printf("Interrupt counter is now at %d \n\r", interrupt_count);
+        _delay_ms(2000);
 
     }
     return 0;
