@@ -41,23 +41,3 @@ void servo_input(uint8_t pwm_input){
         prev_pwm_input = pwm_input;
     }
 }
-
-// void timer3_init(){
-//     //clear_bit(PORTE, PE3); // Set OC3A to 0
-//     //set_bit(TCCR3A, COM3A0); // Clear OC3A on compare match (Set to low)
-//     set_bit(TCCR3A, COM3A1); // Clear OC3A on compare match (Set to low)
-//     //set_bit(TCCR3A, WGM30); // Clear timer on compare match bit 0 (With TOP = ICR3)
-//     set_bit(TCCR3B, WGM32); // Clear timer on compare match bit 2 
-//     //set_bit(TCCR3B, WGM33); // Clear timer on compare match bit 3
-//     set_bit(TCCR3B, CS32); // Clk active with prescaling to clk/256
-//     OCR3A = 0b1111010000100100;
-//     //ICR3 = 0b1111010000100100; // Set TOP to 62500 (1 second)
-//     set_bit(DDRE, PE3); // Set OC3A as output
-//     printf("TCCR3B = %d\n\r", TCCR3B);
-// }
-
-// void timer3_reset(){
-//     set_bit(PORTE, PE3); // Set OC3A to 1
-//     TCNT3 = 0b0;
-//     printf("OC3A = %d\n\r", read_bit(PORTE, PE3));
-// }

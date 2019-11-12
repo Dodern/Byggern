@@ -6,7 +6,5 @@
 
 void servo_init();
 void servo_input(uint8_t pwm_input);
-// void timer3_init();
-// void timer3_reset();
 
 #endif
