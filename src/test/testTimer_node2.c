@@ -16,25 +16,14 @@
 
 
 int main(void){
-    
+
     USART_Init ( MYUBRR );
     can_controller_init();
     timer3_init();
     sei();
 
     while (1){
-        printf("Vi starter her: ");
-        timer3_reset();
-        _delay_ms(1000);
-        printf("\n\n\r");
-        read_timer();
-        printf("\n\n\r");
-        read_timer();
-        _delay_ms(500);
-        read_timer();
-        timer3_reset();
-        _delay_ms(100);
-        read_timer();
+        printf("Vi starter her: \n\r");
         _delay_ms(5000);
     }
     return 0;
