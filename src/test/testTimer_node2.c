@@ -16,9 +16,12 @@
 
 
 int main(void){
+    
     USART_Init ( MYUBRR );
     can_controller_init();
     timer3_init();
+    sei();
+
     while (1){
         printf("Vi starter her: ");
         timer3_reset();

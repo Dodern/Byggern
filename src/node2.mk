@@ -9,7 +9,8 @@ SOURCE_FILES := uart.c \
 				TWI_driver.c \
 				game_logic_driver.c \
 				motor_driver.c \
-				testMotor.c
+				timer_driver.c \
+				testTimer_node2.c
 				# testDay7.c
 				# testTimer_node2.c
 				# testCanNodes2.c

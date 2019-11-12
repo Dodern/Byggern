@@ -6,7 +6,8 @@ SOURCE_FILES := uart.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				testTimer_node1.c
+				testInterrupt.c
+				# testTimer_node1.c
 				# testSRAM.c \
 				# testLatchOutput.c
 				#testADC.c
