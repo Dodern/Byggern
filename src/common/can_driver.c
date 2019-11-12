@@ -8,9 +8,9 @@ void can_send_message(int id, int length, uint8_t* arr, int transmit_line){
     message.id = id;
     message.length = length;
     for (int i = 0; i < length; i++){
-        printf("Arr i,%d = %d\n\r", i , arr[i]);
+        // printf("Arr i,%d = %d\n\r", i , arr[i]);
         message.data[i] = arr[i];
-        printf("Messsage.data i,%d = %d\n\r", i , message.data[i]);
+        // printf("Messsage.data i,%d = %d\n\r", i , message.data[i]);
     }
     int transmit_address = 0;
     int id_high_address = 0;
