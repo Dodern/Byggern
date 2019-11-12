@@ -18,7 +18,7 @@
 int main(void){
     USART_Init ( MYUBRR );
     can_controller_init();
-    timer_init();
+    servo_init();
     struct can_message message;
     while(1){
         message = can_read_message(0);
