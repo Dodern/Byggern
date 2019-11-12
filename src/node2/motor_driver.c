@@ -10,41 +10,49 @@
 void encoder_init(){
     // Sets all pins in PORTC to input
     DDRK &= ~0xFF;
+    encoder_reset();
 }
 
-void read_encoder(){
-    clear_bit(MJ1, MJ1_OE); // Enable output of encoder
-    clear_bit(MJ1, MJ1_SEL); // Select high byte
-    _delay_us(40);
-    // READ MSB
-    uint8_t highbyte = MJ2;
-    printf("Highbyte = %d\n\r", highbyte);
-    set_bit(MJ1, MJ1_SEL); // Select low byte
-    _delay_us(60);
-    // READ LSB
-    uint8_t lowbyte = MJ2;
-    printf("Lowbyte = %d\n\r", lowbyte);
-    //set_bit(MJ1, MJ1_RST); 
-    //clear_bit(MJ1, MJ1_RST); // Toggle reset on and off
-    set_bit(MJ1, MJ1_OE); // Disable output of encoder
+void encoder_reset(){
+    clear_bit(PORT_MJ1, MJ1_RST);
+    _delay_us(200);
+    set_bit(PORT_MJ1, MJ1_RST);      // Toggle reset on and off
+}
+
+int16_t read_encoder(){
+    clear_bit(PORT_MJ1, MJ1_OE); // Enable output of encoder
+    clear_bit(PORT_MJ1, MJ1_SEL); // Select high byte
+    // printf("MJ_SEL = %d\n\r", PORT_MJ1);
+    _delay_us(125);
+    uint8_t highbyte = PIN_MJ2; // READ MSB
+    //printf("Highbyte = %d\n\r", highbyte);
+    set_bit(PORT_MJ1, MJ1_SEL); // Select low byte
+    // printf("MJ_SEL = %d\n\r", PORT_MJ1);
+    _delay_us(125);
+    uint8_t lowbyte = PIN_MJ2; // READ LSB
+    //printf("Lowbyte = %d\n\r", lowbyte);
+    encoder_reset();
+    set_bit(PORT_MJ1, MJ1_OE); // Disable output of encoder
+    int16_t databyte = (highbyte << 8) | (lowbyte & 0xff); 
+    return databyte;   
 }
 
 void motor_init(){
     // Sets MJ1_EN, MJ1_OE, MJ1_RST, MJ1_DIR and MJ1_SEL to output
     DDRH |= (1<<MJ1_EN) | (1<<MJ1_OE) | (1<<MJ1_RST) | (1<<MJ1_DIR) | (1<<MJ1_SEL);
-    set_bit(MJ1, MJ1_EN);
+    set_bit(PORT_MJ1, MJ1_EN);
 }
 
 void stop_motor(){
-    clear_bit(MJ1, MJ1_EN);
+    clear_bit(PORT_MJ1, MJ1_EN);
 }
 
 void set_motor_direction(uint8_t direction){
     if (direction == 1){
-        set_bit(MJ1, MJ1_DIR);
+        set_bit(PORT_MJ1, MJ1_DIR);
     }
     else{
-        clear_bit(MJ1, MJ1_DIR);
+        clear_bit(PORT_MJ1, MJ1_DIR);
     }
 }
 

@@ -11,14 +11,14 @@
 #define I2C_LENGTH 3
 
 // For the encoder
-#define MJ1 PORTH
+#define PORT_MJ1 PORTH
 #define MJ1_DIR PH1
 #define MJ1_SEL PH3
 #define MJ1_EN PH4
 #define MJ1_OE PH5
 #define MJ1_RST PH6
 
-#define MJ2 PORTK
+#define PIN_MJ2 PINK
 #define MJ2_DO0 PK0 //A8
 #define MJ2_DO1 PK1 //A9
 #define MJ2_DO2 PK2 //A10
@@ -32,9 +32,10 @@ void send_i2c_motor_input(uint8_t motor_input);
 void motor_init();
 void motor_input_open_loop(uint8_t joystick_input);
 void motor_input_closed_loop(uint8_t joystick_input);
-void read_encoder();
+int16_t read_encoder();
 void set_motor_direction(uint8_t direction);
 void stop_motor();
 void encoder_init();
+void encoder_reset();
 
 #endif

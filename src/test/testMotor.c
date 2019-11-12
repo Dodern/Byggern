@@ -41,19 +41,32 @@ int main(void){
     // unsigned char test_low = TEST_SET_OUTPUT_LOW;
     unsigned char TWI_state = 0;
     struct can_message message;
+    int16_t encoder = 0;
     while(1){
         stop_motor();
-        read_encoder();
+        // uint16_t encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
         printf("MJ_EN = %d\n\r", MJ1_EN);
-        printf("MJ1 = %d\n\r", MJ1);
+        printf("MJ1 = %d\n\r", PORT_MJ1);
+
+        // message = can_read_message(0);
+        // for (int i = 0; i < message.length; i++){
+        // printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
+        // }
         _delay_ms(1000);
-        set_motor_direction(1);
-        send_i2c_motor_input(60);
-        read_encoder();
-        _delay_ms(50000);
+        // encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
         set_motor_direction(0);
+        send_i2c_motor_input(120);
+        // encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
+        _delay_ms(50000);
+        // encoder = read_encoder();
+        // printf("Encoder = %d\n\r", encoder);
+        set_motor_direction(1);
         send_i2c_motor_input(70);
-        read_encoder();
+        encoder = read_encoder();
+        printf("Encoder = %d\n\r", encoder);
         _delay_ms(50000);
 
 
