@@ -26,19 +26,22 @@ int main(void){
     struct can_message message;
 
     while(1){
-        printf("Node 2 alive\n\r");
+        //solenoid_punch();
+        // printf("Node 2 alive\n\r");
         message = can_read_message(0);
         
         for (int i = 0; i < message.length; i++){
-            printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
+            // printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
         }
-        printf("Length = %d\n\r", message.length);
-        printf("Data = %d\n\r", message.data[0]);
+        // printf("Length = %d\n\r", message.length);
+        // printf("Data = %d\n\r", message.data[0]);
         if (message.data[0]){
-            //solenoid_punch();
+            // printf("Before punch \n\r");
+            _delay_ms(500);
+            solenoid_punch();
             printf("Solenoid punch!\n\r");
         }
-        _delay_ms(50000);
+        _delay_ms(5000);
     }
     return 0;
 }

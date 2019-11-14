@@ -14,6 +14,6 @@ void solenoid_init(){
 
 void solenoid_punch(){
     clear_bit(PORTH, SOLENOID_TRIG_PIN);
-    _delay_ms(400);
+    _delay_ms(1500);
     set_bit(PORTH, SOLENOID_TRIG_PIN);
 }

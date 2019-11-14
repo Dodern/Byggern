@@ -14,7 +14,8 @@ ISR(TIMER3_CAPT_vect){
 
 void timer3_init(){
     // Interrupt
-    set_bit(TIMSK3, ICIE3); // Enable interrupts when ICFn flag is set
+    clear_bit(TIMSK3, ICIE3);
+    //set_bit(TIMSK3, ICIE3); // Enable interrupts when ICFn flag is set
 
     // Timer
     clear_bit(TCCR3A, COM3A0);
