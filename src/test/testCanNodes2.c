@@ -21,6 +21,7 @@ int main(void){
 	USART_Init ( MYUBRR );
 
     can_controller_init();
+    //sei();
 
     struct can_message message;
     struct can_message message2;
@@ -28,12 +29,13 @@ int main(void){
     while (1) {
     message = can_read_message(0);
     //message2 = can_read_message(0);
+    printf("Message length = %d\n\r", message.length);
     
     for (int i = 0; i < message.length; i++){
         printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
         //printf("CAN receive buffer 1 data %d\n\r", message2.data[i]);
     }
-    printf("\n");
+    printf("\n\r");
     _delay_ms(10000);
     // message2 = can_read_message(0);
     //    for (int i = 0; i < message.length; i++){
@@ -44,4 +46,8 @@ int main(void){
     //_delay_ms(30000);
     }
     return 0;
+}
+
+ISR(BADISR_vect){
+    printf("BadISR\r\n");
 }
