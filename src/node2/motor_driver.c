@@ -6,6 +6,9 @@
 #include "motor_driver.h"
 #include "uart.h"
 #include "TWI_driver.h"
+#include "pid.h"
+
+volatile int16_t motor_encoder_range = 0;
 
 void encoder_init(){
     // Sets all pins in PORTC to input
@@ -23,18 +26,31 @@ int16_t read_encoder(){
     clear_bit(PORT_MJ1, MJ1_OE); // Enable output of encoder
     clear_bit(PORT_MJ1, MJ1_SEL); // Select high byte
     // printf("MJ_SEL = %d\n\r", PORT_MJ1);
-    _delay_us(125);
+    _delay_ms(1);
+    //_delay_us(125);
     uint8_t highbyte = PIN_MJ2; // READ MSB
     //printf("Highbyte = %d\n\r", highbyte);
     set_bit(PORT_MJ1, MJ1_SEL); // Select low byte
     // printf("MJ_SEL = %d\n\r", PORT_MJ1);
-    _delay_us(125);
+    _delay_ms(1);
+    //_delay_us(125);
     uint8_t lowbyte = PIN_MJ2; // READ LSB
     //printf("Lowbyte = %d\n\r", lowbyte);
-    encoder_reset();
+    //encoder_reset();
     set_bit(PORT_MJ1, MJ1_OE); // Disable output of encoder
-    int16_t databyte = (highbyte << 8) | (lowbyte & 0xff); 
+    int16_t databyte = (highbyte << 8) | (lowbyte & 0xff);
+    //int16_t databyte = (highbyte << 8) | lowbyte; 
     return databyte;   
+}
+
+int16_t motor_encoder_read_scaled(){
+    int16_t raw_read = read_encoder();
+    printf("Encoder data %d\n\r", raw_read);
+    int scale_factor = floor(-motor_encoder_range/200 ); //new resolution is 200, -100 to 100
+    printf("Scaled factor %d\n\r", scale_factor);
+    int16_t scaled_position = floor(raw_read/scale_factor) - 100;
+    printf("Scaled position %d\n\r", scaled_position);
+    return scaled_position;
 }
 
 void motor_init(){
@@ -47,11 +63,14 @@ void stop_motor(){
     clear_bit(PORT_MJ1, MJ1_EN);
 }
 
+void start_motor(){
+    set_bit(PORT_MJ1, MJ1_EN);
+}
+
 void set_motor_direction(uint8_t direction){
     if (direction == 1){
         set_bit(PORT_MJ1, MJ1_DIR);
-    }
-    else{
+    } else{
         clear_bit(PORT_MJ1, MJ1_DIR);
     }
 }
@@ -67,8 +86,38 @@ void motor_input_open_loop(uint8_t joystick_input){
 
 }
 
-void motor_input_closed_loop(uint8_t joystick_input){
-    // Slave address 0101000
-    // Joystick_input between 0 - 255
-    
+// void motor_input_closed_loop(uint8_t joystick_input, struct PID_DATA *pid){
+//     int16_t encoderval = read_encoder();
+//     //int16_t prev_placement = global position var;
+//     int16_t controlval = pid_Controller((int16_t)joystick_input, prev_placement, pid);
+//     if (controlval > 0) {
+//         set_motor_direction(1);
+//     } else {
+//         set_motor_direction(0);
+//     }
+//     printf("Control value = %d\n\r", controlval);
+//     //send_i2c_motor_input((uint8_t)abs(controlval));
+//     //update global position var;
+// }
+
+void motor_calibrate(){
+    start_motor();
+    int16_t encoder_max_val = 0;
+    set_motor_direction(0);
+    send_i2c_motor_input(110);
+    int16_t encoderval = read_encoder();
+    _delay_ms(12000);
+    stop_motor();
+    _delay_ms(10000);
+    start_motor();
+    encoder_reset();
+    set_motor_direction(1);
+    send_i2c_motor_input(110);
+    _delay_ms(50000);
+    encoder_max_val = read_encoder();
+    printf("Encoder max val = %d\n\r", encoder_max_val);
+    // TODO: Add in move to center function via PID control.
+    stop_motor();
+    encoder_reset();
+    motor_encoder_range = encoder_max_val;
 }

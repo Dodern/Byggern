@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include <stdio.h>
+#include "pid.h"
 
 // In normal I2C the last bit indicates R/W bit, but as the DAC only receives
 // data the last bit is 0.
@@ -28,14 +29,17 @@
 #define MJ2_DO6 PK6 //A14
 #define MJ2_DO7 PK7 //A15
 
-void send_i2c_motor_input(uint8_t motor_input);
-void motor_init();
-void motor_input_open_loop(uint8_t joystick_input);
-void motor_input_closed_loop(uint8_t joystick_input);
-int16_t read_encoder();
-void set_motor_direction(uint8_t direction);
-void stop_motor();
 void encoder_init();
 void encoder_reset();
+int16_t read_encoder();
+int16_t motor_encoder_read_scaled();
+void motor_init();
+void stop_motor();
+void start_motor();
+void set_motor_direction(uint8_t direction);
+void send_i2c_motor_input(uint8_t motor_input);
+void motor_input_open_loop(uint8_t joystick_input);
+// void motor_input_closed_loop(uint8_t joystick_input, struct PID_DATA *pid);
+void motor_calibrate();
 
 #endif

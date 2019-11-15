@@ -15,6 +15,7 @@ typedef struct PID_DATA {
 	int32_t maxSumError;
 } pidData_t;
 
+#define MAX_UINT UINT8_MAX
 #define MAX_INT INT16_MAX
 #define MAX_LONG INT32_MAX
 #define MAX_I_TERM (MAX_LONG / 2)

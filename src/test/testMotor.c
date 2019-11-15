@@ -13,6 +13,7 @@
 #include "adc_driver.h"
 #include "TWI_driver.h"
 #include "motor_driver.h"
+#include "pid.h"
 
 #define FOSC 16000000 // Clock Speed
 #define BAUD 9600
@@ -28,9 +29,10 @@ int main(void){
     servo_init();
     adc_init();
     TWI_Master_Initialise();
-    sei();
     motor_init();
     encoder_init();
+
+    sei();
 
     unsigned char test_high[] = {0b01010000, 0b00000000, 0b11111111};
     unsigned char test_medium[] = {0b01010000, 0b00000000, 0b01111111};
@@ -43,56 +45,56 @@ int main(void){
     struct can_message message;
     int16_t encoder = 0;
     int center_value = 127;
+
+    struct PID_DATA pid;
+
+    pid_Init(1, 1, 1, &pid);
+    //_delay_ms(50000);
+    motor_calibrate();
+
+    start_motor();
+    motor_encoder_read_scaled();
+    set_motor_direction(1);
+    send_i2c_motor_input(70); 
+    _delay_ms(25000);
+
     while(1){
-        // stop_motor();
-        // uint16_t encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        // printf("MJ_EN = %d\n\r", MJ1_EN);
-        // printf("MJ1 = %d\n\r", PORT_MJ1);
-
-
-        _delay_ms(1000);
-        message = can_read_message(0);
-        // printf("CAN receive buffer 0 data: %d, %d\n\r", message.data[0], message.data[1]);
-        int horizontal_value =(message.data[0]-center_value)/(255.0-center_value)*100;
-        printf("Horizontal value: %d\n\r", horizontal_value);
-        // for (int i = 0; i < message.length; i++){
-        // printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
-        // }
-
-        _delay_ms(1000);
-        if (horizontal_value < 0) {
-            set_motor_direction(0);
-        } else {
-            set_motor_direction(1);
-        }
-        
-        // encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        // set_motor_direction(0);
-        
-        send_i2c_motor_input(abs( horizontal_value ));
-        // encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        // _delay_ms(50000);
-        // encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        // set_motor_direction(1);
-        // send_i2c_motor_input(70);
-        encoder = read_encoder();
-        // printf("Encoder = %d\n\r", encoder);
-        // _delay_ms(50000);
-
-        // set_motor_direction(0);
+        set_motor_direction(0);
+        send_i2c_motor_input(70); 
+        _delay_ms(5000);
+        motor_encoder_read_scaled();
+        _delay_ms(5000);
+        motor_encoder_read_scaled();
+        _delay_ms(5000);
+        set_motor_direction(1);
+        send_i2c_motor_input(70); 
+        motor_encoder_read_scaled();
+        _delay_ms(5000);
+        motor_encoder_read_scaled();
+        _delay_ms(5000);
+        motor_encoder_read_scaled();
+        _delay_ms(15000);
         // _delay_ms(1000);
-        // send_i2c_motor_input(110);
-        // _delay_ms(5000);
-        // PWM signal
         // message = can_read_message(0);
-        // for (int i = 0; i < message.length; i++){
-        //     printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
+        // // printf("CAN receive buffer 0 data: %d, %d\n\r", message.data[0], message.data[1]);
+        // //int horizontal_value =(message.data[0]-center_value)/(255.0-center_value)*100;
+        // _delay_ms(10000);
+        // int horizontal_value = message.data[0];
+        // printf("Horizontal value: %d\n\r", horizontal_value);
+        // int encoderval = read_encoder();
+        // printf("Encoder value %d\n\r", encoderval);
+        // send_i2c_motor_input(50);
+        // stop_motor();
+        // _delay_ms(100000);
+        //motor_input_closed_loop(horizontal_value, &pid);
+        // if (horizontal_value < 0) {
+        //     set_motor_direction(0);
+        // } else {
+        //     set_motor_direction(1);
         // }
-        // servo_input(message.data[0]);
+        
+        // send_i2c_motor_input(abs( horizontal_value ));
+        // encoder = read_encoder();
     }
     return 0;
 }
