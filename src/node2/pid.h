@@ -24,8 +24,8 @@ typedef struct PID_DATA {
 #define FALSE 0
 #define TRUE 1
 
-void    pid_Init(int16_t p_factor, int16_t i_factor, int16_t d_factor, struct PID_DATA *pid);
-int16_t pid_Controller(int16_t setPoint, int16_t processValue, struct PID_DATA *pid_st);
+// void 	pid_init(int16_t p_factor, int16_t i_factor, int16_t d_factor, struct PID_DATA *pid);
+int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_position);
 void    pid_Reset_Integrator(pidData_t *pid_st);
 
 #endif

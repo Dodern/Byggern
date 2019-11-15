@@ -38,8 +38,8 @@ void stop_motor();
 void start_motor();
 void set_motor_direction(uint8_t direction);
 void send_i2c_motor_input(uint8_t motor_input);
-void motor_input_open_loop(uint8_t joystick_input);
-// void motor_input_closed_loop(uint8_t joystick_input, struct PID_DATA *pid);
+void motor_input_open_loop(int8_t joystick_input);
+void motor_input_closed_loop(int8_t joystick_input);
 void motor_calibrate();
 
 #endif

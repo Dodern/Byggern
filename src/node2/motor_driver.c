@@ -45,11 +45,9 @@ int16_t read_encoder(){
 
 int16_t motor_encoder_read_scaled(){
     int16_t raw_read = read_encoder();
-    printf("Encoder data %d\n\r", raw_read);
     int scale_factor = floor(-motor_encoder_range/200 ); //new resolution is 200, -100 to 100
-    printf("Scaled factor %d\n\r", scale_factor);
     int16_t scaled_position = floor(raw_read/scale_factor) - 100;
-    printf("Scaled position %d\n\r", scaled_position);
+    // int16_t scaled_position = floor(raw_read/floor(-motor_encoder_range/200)) - 100; //new resolution is 200, -100 to 100
     return scaled_position;
 }
 
@@ -80,31 +78,33 @@ void send_i2c_motor_input(uint8_t motor_input){
     TWI_Start_Transceiver_With_Data(i2c_message, I2C_LENGTH);
 }
 
-void motor_input_open_loop(uint8_t joystick_input){
+void motor_input_open_loop(int8_t joystick_input){
     // Slave address 0101000
     // Joystick_input between 0 - 255
 
 }
 
-// void motor_input_closed_loop(uint8_t joystick_input, struct PID_DATA *pid){
-//     int16_t encoderval = read_encoder();
-//     //int16_t prev_placement = global position var;
-//     int16_t controlval = pid_Controller((int16_t)joystick_input, prev_placement, pid);
-//     if (controlval > 0) {
-//         set_motor_direction(1);
-//     } else {
-//         set_motor_direction(0);
-//     }
-//     printf("Control value = %d\n\r", controlval);
-//     //send_i2c_motor_input((uint8_t)abs(controlval));
-//     //update global position var;
-// }
+void motor_input_closed_loop(int8_t joystick_input){
+    int16_t current_placement = motor_encoder_read_scaled();
+    printf("Current placement = %d\n\r", current_placement);
+    printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
+    int16_t controlval = pid_controller(1,1,1,(int16_t)joystick_input, current_placement);
+    if (controlval > 0) {
+        set_motor_direction(1);
+    } else {
+        set_motor_direction(0);
+    }
+    uint16_t conversion_test = abs(controlval);
+    printf("Control value = %d\n\r", controlval);
+    printf("Conversion Control value = %u\n\r", conversion_test);
+    send_i2c_motor_input((uint8_t)abs(controlval));
+}
 
 void motor_calibrate(){
     start_motor();
     int16_t encoder_max_val = 0;
     set_motor_direction(0);
-    send_i2c_motor_input(110);
+    send_i2c_motor_input(100);
     int16_t encoderval = read_encoder();
     _delay_ms(12000);
     stop_motor();
@@ -112,7 +112,7 @@ void motor_calibrate(){
     start_motor();
     encoder_reset();
     set_motor_direction(1);
-    send_i2c_motor_input(110);
+    send_i2c_motor_input(100);
     _delay_ms(50000);
     encoder_max_val = read_encoder();
     printf("Encoder max val = %d\n\r", encoder_max_val);
@@ -121,3 +121,8 @@ void motor_calibrate(){
     encoder_reset();
     motor_encoder_range = encoder_max_val;
 }
+
+
+// void motor_encoder_raw_to_scaled(raw_read, motor_encoder_range){
+//     return floor(raw_read/floor(-motor_encoder_range/200)) - 100;
+// }

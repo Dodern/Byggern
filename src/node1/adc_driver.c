@@ -10,6 +10,7 @@ static uint8_t read_data_array[4];
 static uint8_t joystick_center_array[2];
 static int8_t joystick_current_position[2];
 
+
 const char* adc_channels[] = {
     "JOYSTICK_VERTICAL" ,
     "JOYSTICK_HORIZONTAL",
@@ -131,6 +132,11 @@ uint8_t adc_get_right_slider_position(void){
     return read_data_array[3];//joystick_current_position[0];
 }
 
+uint8_t adc_get_left_slider_position(void){
+    adc_read_all_channels();
+    return read_data_array[3];//joystick_current_position[0];
+}
+
 void adc_print_current_position(){
     adc_read_joystick_position();
     printf("X: %d, Y: %d \n\r", joystick_current_position[0], joystick_current_position[1]);
@@ -165,4 +171,15 @@ int adc_print_button_states(){
 	int left_btn = adc_is_left_button_pressed();
 	int right_btn = adc_is_right_button_pressed();
 	printf("Current button states - Joystick: %d  LeftButton: %d  RightButton: %d\n\r", joy_btn, left_btn, right_btn);
+}
+
+void adc_update_all_player_inputs(uint8_t *player_inputs){
+    adc_read_all_channels();
+    player_inputs[0] = read_data_array[0]; // JOYSTICK_VERTICAL 
+    player_inputs[1] = read_data_array[1]; // "JOYSTICK_HORIZONTAL" 
+    player_inputs[2] = read_data_array[2]; // "LEFT_SLIDER",
+    player_inputs[3] = read_data_array[3]; // "RIGHT_SLIDER"
+    player_inputs[4] = adc_is_joystick_button_pressed();
+    player_inputs[5] = adc_is_left_button_pressed();
+    player_inputs[6] = adc_is_right_button_pressed();
 }

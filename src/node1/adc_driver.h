@@ -8,6 +8,16 @@ enum joystick_direction {LEFT, RIGHT, UP, DOWN, NEUTRAL};
 //     int joystick_pos[2];
 // };
 
+struct adc_player_inputs {
+    uint8_t right_slider;
+    uint8_t left_slider;
+    uint8_t joystick_verticle_position;
+    uint8_t joystick_horizontal_position;
+    uint8_t right_button;
+    uint8_t left_button;
+    uint8_t joystick_button;
+};
+
 void adc_init();
 void adc_read_all_channels();
 void adc_print_all_channels();
@@ -24,5 +34,7 @@ int adc_is_joystick_button_pressed();
 int adc_is_left_button_pressed();
 int adc_is_right_button_pressed();
 int adc_print_button_states();
+
+void adc_update_all_player_inputs(uint8_t *player_inputs);
 
 #endif

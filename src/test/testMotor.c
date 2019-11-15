@@ -34,6 +34,15 @@ int main(void){
 
     sei();
 
+    uint8_t player_inputs[7];
+    uint8_t joystick_verticle ;
+    uint8_t joystick_horizontal;
+    uint8_t left_slider;
+    uint8_t right_slider;
+    uint8_t joystick_button;
+    uint8_t left_button;
+    uint8_t right_button;
+
     unsigned char test_high[] = {0b01010000, 0b00000000, 0b11111111};
     unsigned char test_medium[] = {0b01010000, 0b00000000, 0b01111111};
     unsigned char test_low[] = {0b01010000, 0b00000000, 0b00000000};
@@ -44,11 +53,12 @@ int main(void){
     unsigned char TWI_state = 0;
     struct can_message message;
     int16_t encoder = 0;
-    int center_value = 127;
+    // int center_value = 127;
+    int center_value = 128;
 
-    struct PID_DATA pid;
+    //struct PID_DATA pid;
 
-    pid_Init(1, 1, 1, &pid);
+    //pid_Init(1, 1, 1, &pid);
     //_delay_ms(50000);
     motor_calibrate();
 
@@ -59,25 +69,45 @@ int main(void){
     _delay_ms(25000);
 
     while(1){
-        set_motor_direction(0);
-        send_i2c_motor_input(70); 
-        _delay_ms(5000);
-        motor_encoder_read_scaled();
-        _delay_ms(5000);
-        motor_encoder_read_scaled();
-        _delay_ms(5000);
-        set_motor_direction(1);
-        send_i2c_motor_input(70); 
-        motor_encoder_read_scaled();
-        _delay_ms(5000);
-        motor_encoder_read_scaled();
-        _delay_ms(5000);
-        motor_encoder_read_scaled();
-        _delay_ms(15000);
+        message = can_read_message(0);
+
+        joystick_verticle = message.data[0];
+        joystick_horizontal = message.data[1];
+        left_slider = message.data[2];
+        right_slider = message.data[3];
+        joystick_button = message.data[4];
+        left_button = message.data[5];
+        right_button = message.data[6];
+
+        // for (int i = 0; i < 7; i++) {
+        //     printf("player_inputs[%d] = %d\n\r", i, message.data[i]);
+        // }
+
+        int horizontal_value = ((right_slider-center_value)/(255.0-center_value)*100);
+        printf("horizontal value = %d\n\r", horizontal_value);
+        printf("\n\r");
+        motor_input_closed_loop(horizontal_value);
+        // _delay_ms(25000);
+        _delay_ms(1000);
+        // set_motor_direction(0);
+        // send_i2c_motor_input(70); 
+        // _delay_ms(5000);
+        // motor_encoder_read_scaled();
+        // _delay_ms(5000);
+        // motor_encoder_read_scaled();
+        // _delay_ms(5000);
+        // set_motor_direction(1);
+        // send_i2c_motor_input(70); 
+        // motor_encoder_read_scaled();
+        // _delay_ms(5000);
+        // motor_encoder_read_scaled();
+        // _delay_ms(5000);
+        // motor_encoder_read_scaled();
+        // _delay_ms(15000);
         // _delay_ms(1000);
         // message = can_read_message(0);
         // // printf("CAN receive buffer 0 data: %d, %d\n\r", message.data[0], message.data[1]);
-        // //int horizontal_value =(message.data[0]-center_value)/(255.0-center_value)*100;
+        // //;
         // _delay_ms(10000);
         // int horizontal_value = message.data[0];
         // printf("Horizontal value: %d\n\r", horizontal_value);
