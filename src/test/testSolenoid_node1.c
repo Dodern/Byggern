@@ -6,6 +6,7 @@
 #include "uart.h"
 #include "adc_driver.h"
 #include "spi_driver.h"
+#include "oled_driver.h"
 #include "mcp2515.h"
 #include "can_controller_driver.h"
 #include "can_driver.h"
@@ -20,7 +21,10 @@ int main(void){
     USART_Init ( MYUBRR );
     xmem_init();
     adc_init();
+    oled_init();
     can_controller_init();
+
+    oled_print_picture();
 
     uint8_t left_button[] = {0};
     int length = SIZE(left_button);

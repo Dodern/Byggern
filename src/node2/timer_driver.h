@@ -1,5 +1,5 @@
-#ifndef SERVO_DRIVER_H
-#define SERVO_DRIVER_H
+#ifndef TIMER_DRIVER_H
+#define TIMER_DRIVER_H
 
 #include <avr/io.h>
 #include <stdio.h>

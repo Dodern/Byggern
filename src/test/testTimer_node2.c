@@ -25,6 +25,7 @@ int main(void){
     while (1){
         printf("Vi starter her: \n\r");
         _delay_ms(5000);
+        read_timer();
     }
     return 0;
 }
