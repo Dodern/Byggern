@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/io.h>
 
 #include "bit_macros.h"
 #include "timer_driver.h"

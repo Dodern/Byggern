@@ -22,6 +22,7 @@ int main(void){
     can_controller_init();
     servo_init();
     solenoid_init();
+    sei();
 
     struct can_message message;
 
@@ -39,9 +40,9 @@ int main(void){
             // printf("Before punch \n\r");
             _delay_ms(500);
             solenoid_punch();
-            printf("Solenoid punch!\n\r");
         }
-        _delay_ms(5000);
+        solenoid_timer_read();
+        _delay_ms(500);
     }
     return 0;
 }

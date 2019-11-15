@@ -8,18 +8,14 @@ SOURCE_FILES := uart.c \
 				servo_driver.c \
 				TWI_driver.c \
 				game_logic_driver.c \
-				motor_driver.c \
 				solenoid_driver.c \
-				timer_driver.c \
+				testSolenoid_node2.c
+				# motor_driver.c \
+				# pid.c \
 				testTimer_node2.c
-				
-				#testSolenoid_node2.c
 				#testCanNodes2.c
 				# timer_driver.c \
-				
 				# testDay7.c
-				
-				
 				# testGameLogic.c
 				# testADC_node2.c
 				

@@ -8,7 +8,7 @@
 #include "mcp2515.h"
 #include "can_controller_driver.h"
 #include "can_driver.h"
-#include "timer_driver.h"
+#include "servo_driver.h"
 
 #define FOSC 16000000 // Clock Speed
 #define BAUD 9600
@@ -19,13 +19,12 @@ int main(void){
 
     USART_Init ( MYUBRR );
     can_controller_init();
-    timer3_init();
+    servo_init();
     sei();
 
     while (1){
         printf("Vi starter her: \n\r");
         _delay_ms(5000);
-        read_timer();
     }
     return 0;
 }

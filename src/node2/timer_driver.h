@@ -1,7 +1,6 @@
 #ifndef TIMER_DRIVER_H
 #define TIMER_DRIVER_H
 
-#include <avr/io.h>
 #include <stdio.h>
 
 
