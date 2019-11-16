@@ -110,7 +110,7 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
     int32_t i_term = 0;
     int32_t d_term = 0;
 
-	errors = set_point - current_position;
+	errors = abs(set_point - current_position);
 
 	// printf("Errors = %d\n\r", errors);
 
@@ -141,7 +141,10 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
 	// LIMITER
 	if (ret > 100) {
 		ret = 100;
+	} else if (ret < -100) {
+		ret = -100;
 	}
+	
 
 	printf("Ret = %d\n\r", ret);
 

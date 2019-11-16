@@ -48,7 +48,7 @@ int16_t motor_encoder_read_scaled(){
     int scale_factor = floor(-motor_encoder_range/200 ); //new resolution is 200, -100 to 100
     int16_t scaled_position = floor(raw_read/scale_factor) - 100;
     // int16_t scaled_position = floor(raw_read/floor(-motor_encoder_range/200)) - 100; //new resolution is 200, -100 to 100
-    return scaled_position;
+    return -scaled_position;
 }
 
 void motor_init(){
@@ -86,10 +86,10 @@ void motor_input_open_loop(int8_t joystick_input){
 
 void motor_input_closed_loop(int8_t joystick_input){
     int16_t current_placement = motor_encoder_read_scaled();
-    // printf("Current placement = %d\n\r", current_placement);
+    printf("________Current placement = %d\n\r", current_placement);
     // printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
     int16_t controlval = pid_controller(1,1,1,(int16_t)joystick_input, current_placement);
-    if (controlval > 0) {
+    if (joystick_input < current_placement) {
         set_motor_direction(0);
     } else {
         set_motor_direction(1);
