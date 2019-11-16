@@ -3,6 +3,7 @@
 
 #include <avr/io.h>
 #include <stdio.h>
+#include <stdint.h>
 #include "pid.h"
 
 // In normal I2C the last bit indicates R/W bit, but as the DAC only receives
@@ -32,14 +33,14 @@
 void encoder_init();
 void encoder_reset();
 int16_t read_encoder();
-int16_t motor_encoder_read_scaled();
+uint16_t motor_encoder_read_scaled();
 void motor_init();
 void stop_motor();
 void start_motor();
 void set_motor_direction(uint8_t direction);
 void send_i2c_motor_input(uint8_t motor_input);
 void motor_input_open_loop(uint8_t joystick_input);
-void motor_input_closed_loop(uint8_t joystick_input);
+void motor_input_closed_loop(uint8_t raw_input);
 void motor_calibrate();
 void motor_timer_init();
 void motor_timer_reset();
@@ -47,5 +48,5 @@ void motor_read_timer();
 void motor_timer_start();
 void motor_timer_stop();
 int16_t motor_pos_diff(uint8_t joystick_input);
-
+uint16_t motor_input_scaler(uint8_t raw_input);
 #endif

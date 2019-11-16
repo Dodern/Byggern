@@ -47,12 +47,13 @@ int16_t read_encoder(){
     return databyte;   
 }
 
-int16_t motor_encoder_read_scaled(){
+uint16_t motor_encoder_read_scaled(){
     int16_t raw_read = read_encoder();
-    int scale_factor = floor(-motor_encoder_range/200 ); //new resolution is 200, -100 to 100
-    int16_t scaled_position = floor(raw_read/scale_factor) - 100;
-    // int16_t scaled_position = floor(raw_read/floor(-motor_encoder_range/200)) - 100; //new resolution is 200, -100 to 100
-    return -scaled_position;
+    uint16_t scaled_position = floor(raw_read/(motor_encoder_range/900) + 100); //new resolution is 200, -100 to 100
+    printf("Raw Read = %d\n\r", raw_read);
+    printf("Scale position encoder = %d\n\r", scaled_position);
+    // uint16_t scaled_position = floor(raw_read/scale_factor) - 20;
+    return scaled_position;
 }
 
 void motor_init(){
@@ -88,27 +89,12 @@ void motor_input_open_loop(uint8_t joystick_input){
 
 }
 
-void motor_input_closed_loop(uint8_t joystick_input){
-    int centered_input = ((joystick_input-128)/(255.0-128)*100);
-    int16_t current_placement = motor_encoder_read_scaled();
-    printf("________Current placement = %d\n\r", current_placement);
-    // printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
-    int16_t control_val = pid_controller(80,1,20,(int16_t)centered_input, current_placement);
-    if (control_val < 0) {
-        set_motor_direction(0);
-    } else {
-        set_motor_direction(1);
-    }
-    // if (joystick_input < current_placement) {
-    //     set_motor_direction(0);
-    // } else {
-    //     set_motor_direction(1);
-    // }
-    // uint16_t conversion_test = abs(controlval);
-    // printf("Control value = %d\n\r", controlval);
-    // printf("Conversion Control value = %u\n\r", conversion_test);
-    uint8_t motor_input = (uint8_t)abs(control_val);
-    // printf("motor input: %d\n\r", motor_input);
+void motor_input_closed_loop(uint8_t raw_input){
+    uint16_t scaled_input = motor_input_scaler(raw_input);
+    uint16_t current_placement = motor_encoder_read_scaled();
+    printf("________Current placement = %u\n\r", current_placement);
+    uint8_t motor_input = pid_controller(1,1,1, scaled_input, current_placement);
+    printf("motor input pid: %d\n\r", motor_input);
     send_i2c_motor_input(motor_input);
 }
 
@@ -177,6 +163,16 @@ void motor_timer_stop(){
     clear_bit(TCCR5B, CS50);
     clear_bit(TCCR5B, CS51);
     clear_bit(TCCR5B, CS52); // Clear clk bits
+}
+
+
+uint16_t motor_input_scaler(uint8_t raw_input){
+    // float scale_factor = 255.0/200.0;
+    uint16_t scaled_input = floor(raw_input/(255.0/900.0) + 100);
+    // printf("Raw input = %d\n\r", raw_input);
+    // printf("Scale factor input = %.2f\n\r", scale_factor);
+    // printf("Scaled input = %d\n\r", scaled_input);
+    return scaled_input;
 }
 
 // int16_t motor_pos_diff(uint8_t joystick_input){

@@ -22,13 +22,13 @@ void servo_init(){
 }
 
 void servo_input(uint8_t pwm_input){
-    printf("pwm input %d\n\r", pwm_input);
-    printf("previous pwm input %d\n\r", pwm_input);
+    //printf("pwm input %d\n\r", pwm_input);
+    //printf("previous pwm input %d\n\r", pwm_input);
     if (abs(prev_pwm_input - pwm_input) > 20){
-        printf("inside if statement\n\r");
+        //printf("inside if statement\n\r");
         // Set dutycyle to between 0.045 (0.9 ms, to the left) and 0.105 (2.1 ms, to the right)
         //printf("pwm_input = %d\n\r", pwm_input);
-        float dutycycle = 0.045 + (255-pwm_input)*0.000235;
+        float dutycycle = 0.045 + (255-(255-pwm_input))*0.000235;
         if (pwm_input > 255 || dutycycle > 0.105){
             dutycycle = 0.105;
         } else if (pwm_input < 0 || dutycycle < 0.045){
