@@ -13,12 +13,13 @@ volatile int timer_state = 0;
 ISR(TIMER3_CAPT_vect){ 
     timer_state = 0; 
     printf("Timer state = %d\n\r", timer_state); 
+    solenoid_timer_stop();
 } 
 
 // Checking if ISR is bad
-ISR(BAD_ISR){
-    printf("BAD ISR\n\r");
-}
+// ISR(BAD_ISR){
+//     printf("BAD ISR\n\r");
+// }
 
 void solenoid_init(){
     //Setting up trigger for Solenoid
@@ -54,7 +55,8 @@ void solenoid_punch(){
     clear_bit(PORTH, SOLENOID_TRIG_PIN);
     _delay_ms(1500);
     set_bit(PORTH, SOLENOID_TRIG_PIN);
-    solenoid_timer_reset();
+    // solenoid_timer_reset();
+    solenoid_timer_start();
 }
 
 void solenoid_timer_reset(){
@@ -64,4 +66,15 @@ void solenoid_timer_reset(){
 
 void solenoid_timer_read(){
     printf("TCNT3 = %u\n\r", TCNT3);
+}
+
+void solenoid_timer_start(){
+    timer_state = 1;
+    set_bit(TCCR3B, CS32); // Clk active with prescaling to clk/256
+}
+
+void solenoid_timer_stop(){
+    clear_bit(TCCR3B, CS30);
+    clear_bit(TCCR3B, CS31);
+    clear_bit(TCCR3B, CS32); // Clear clk bits
 }
