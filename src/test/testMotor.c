@@ -65,19 +65,19 @@ int main(void){
     start_motor();
     motor_encoder_read_scaled();
     set_motor_direction(1);
-    send_i2c_motor_input(70); 
+    send_i2c_motor_input(60); 
     _delay_ms(25000);
 
     while(1){
         message = can_read_message(0);
 
-        joystick_verticle = message.data[0];
-        joystick_horizontal = message.data[1];
-        left_slider = message.data[2];
+        // joystick_verticle = message.data[0];
+        // joystick_horizontal = message.data[1];
+        // left_slider = message.data[2];
         right_slider = message.data[3];
-        joystick_button = message.data[4];
-        left_button = message.data[5];
-        right_button = message.data[6];
+        // joystick_button = message.data[4];
+        // left_button = message.data[5];
+        // right_button = message.data[6];
 
         // for (int i = 0; i < 7; i++) {
         //     printf("player_inputs[%d] = %d\n\r", i, message.data[i]);

@@ -86,18 +86,20 @@ void motor_input_open_loop(int8_t joystick_input){
 
 void motor_input_closed_loop(int8_t joystick_input){
     int16_t current_placement = motor_encoder_read_scaled();
-    printf("Current placement = %d\n\r", current_placement);
-    printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
+    // printf("Current placement = %d\n\r", current_placement);
+    // printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
     int16_t controlval = pid_controller(1,1,1,(int16_t)joystick_input, current_placement);
     if (controlval > 0) {
-        set_motor_direction(1);
-    } else {
         set_motor_direction(0);
+    } else {
+        set_motor_direction(1);
     }
     uint16_t conversion_test = abs(controlval);
-    printf("Control value = %d\n\r", controlval);
-    printf("Conversion Control value = %u\n\r", conversion_test);
-    send_i2c_motor_input((uint8_t)abs(controlval));
+    // printf("Control value = %d\n\r", controlval);
+    // printf("Conversion Control value = %u\n\r", conversion_test);
+    uint8_t motor_input = (uint8_t)abs(controlval);
+    // printf("motor input: %d\n\r", motor_input);
+    send_i2c_motor_input(motor_input);
 }
 
 void motor_calibrate(){
