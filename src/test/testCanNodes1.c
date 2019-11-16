@@ -57,7 +57,7 @@ int main(void){
         }
         printf("\n\r");
         can_send_message(0, player_inputs_length, &player_inputs, 0);
-        _delay_ms(5000);
+        _delay_ms(100);
         // can_send_message(0b1, length2, &arr2, 1);
         // _delay_ms(50000);
     }

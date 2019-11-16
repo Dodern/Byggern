@@ -14,6 +14,7 @@
 #include "TWI_driver.h"
 #include "motor_driver.h"
 #include "pid.h"
+#include "solenoid_driver.h"
 
 #define FOSC 16000000 // Clock Speed
 #define BAUD 9600
@@ -23,6 +24,9 @@
 
 // V_{ref} * (255/256) = 0b11111111
 
+volatile int interruptcounter = 0;
+volatile uint8_t player_inputs[7];
+
 int main(void){
     USART_Init ( MYUBRR );
     can_controller_init();
@@ -31,10 +35,12 @@ int main(void){
     TWI_Master_Initialise();
     motor_init();
     encoder_init();
+    motor_timer_init();
+    solenoid_init();
 
     sei();
 
-    uint8_t player_inputs[7];
+    solenoid_timer_start();
     uint8_t joystick_verticle ;
     uint8_t joystick_horizontal;
     uint8_t left_slider;
@@ -43,9 +49,9 @@ int main(void){
     uint8_t left_button;
     uint8_t right_button;
 
-    unsigned char test_high[] = {0b01010000, 0b00000000, 0b11111111};
-    unsigned char test_medium[] = {0b01010000, 0b00000000, 0b01111111};
-    unsigned char test_low[] = {0b01010000, 0b00000000, 0b00000000};
+    // unsigned char test_high[] = {0b01010000, 0b00000000, 0b11111111};
+    // unsigned char test_medium[] = {0b01010000, 0b00000000, 0b01111111};
+    // unsigned char test_low[] = {0b01010000, 0b00000000, 0b00000000};
 
     // unsigned char test_high = TEST_SET_OUTPUT_HIGH;
     // unsigned char test_medium = TEST_SET_OUTPUT_MEDIUM;
@@ -55,6 +61,7 @@ int main(void){
     int16_t encoder = 0;
     // int center_value = 127;
     int center_value = 128;
+
 
     //struct PID_DATA pid;
 
@@ -70,11 +77,25 @@ int main(void){
 
     while(1){
         message = can_read_message(0);
+        if (player_inputs[3] - message.data[3] >= 10){
+            motor_timer_start();
+        }
+        for (int i = 0; i < 7; i++){
+            player_inputs[i] = message.data[i];
+        }
+        //printf("Player inputs = %d\n\r", player_inputs[3]);
+        //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
+        
+        if (player_inputs[5]){
+            printf("Solenoid punch!\n\r");
+            solenoid_punch();
+        }
 
+        servo_input(player_inputs[2]);
         // joystick_verticle = message.data[0];
         // joystick_horizontal = message.data[1];
         // left_slider = message.data[2];
-        right_slider = message.data[3];
+        // right_slider = message.data[3];
         // joystick_button = message.data[4];
         // left_button = message.data[5];
         // right_button = message.data[6];
@@ -83,10 +104,10 @@ int main(void){
         //     printf("player_inputs[%d] = %d\n\r", i, message.data[i]);
         // }
 
-        int horizontal_value = ((right_slider-center_value)/(255.0-center_value)*100);
-        printf("horizontal value = %d\n\r", horizontal_value);
-        printf("\n\r");
-        motor_input_closed_loop(horizontal_value);
+        // int horizontal_value = ((right_slider-center_value)/(255.0-center_value)*100);
+        // printf("horizontal value = %d\n\r", horizontal_value);
+        // printf("\n\r");
+        // motor_input_closed_loop(horizontal_value);
         // _delay_ms(25000);
         _delay_ms(1000);
         // set_motor_direction(0);
@@ -128,3 +149,13 @@ int main(void){
     }
     return 0;
 }
+
+ISR(BAD_ISR){
+    printf("BAD ISR\n\r");
+}
+
+ISR(TIMER5_CAPT_vect){
+    uint8_t right_slider = player_inputs[3];
+    motor_input_closed_loop(right_slider);
+    printf("In interrupt!\n\r");
+} 

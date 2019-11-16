@@ -110,7 +110,7 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
     int32_t i_term = 0;
     int32_t d_term = 0;
 
-	errors = abs(set_point - current_position);
+	errors = set_point - current_position;
 
 	// printf("Errors = %d\n\r", errors);
 
@@ -123,12 +123,14 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
 	// temp = sumError + errors;
 	// sumError = temp;
 	// i_term = i * sumError;
+	// printf("SumError = %d\n\r", sumError);
+	// printf("Temp = %d\n\r", temp);
 
 	// printf("sumError = %d\n\r", sumError);
 	// printf("I-term = %d\n\r", i_term);
 
 	// Calculate Dterm
-	// d_term = d * (last_current_position - current_position);
+	//d_term = d * (last_current_position - current_position);
 
 	// printf("D-term = %d\n\r", d_term);
 
@@ -136,13 +138,20 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
 
 	// printf("current_position = %d\n\r", current_position);
 
-	ret = floor((p_term + i_term + d_term)/1); // / SCALING_FACTOR;
+	ret = floor((p_term + i_term + d_term)/80); // / SCALING_FACTOR;
 	
 	// LIMITER
 	if (ret > 100) {
 		ret = 100;
 	} else if (ret < -100) {
 		ret = -100;
+	}
+
+	if (ret > 10 && ret < 50){
+		ret = 50;
+	}
+	if (ret < -10 && ret > -50){
+		ret = -50;
 	}
 	
 

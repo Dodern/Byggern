@@ -6,8 +6,8 @@ SOURCE_FILES := uart.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				testSolenoid_node1.c
-				# testCanNodes1.c
+				testCanNodes1.c
+				# testSolenoid_node1.c
 				
 				
 				#testInterrupt.c

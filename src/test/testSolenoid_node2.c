@@ -23,6 +23,7 @@ int main(void){
     servo_init();
     solenoid_init();
     sei();
+    solenoid_timer_start();
 
     struct can_message message;
 

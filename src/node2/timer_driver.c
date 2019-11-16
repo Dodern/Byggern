@@ -1,10 +1,13 @@
 #include <stdlib.h>
+#include <util/delay.h>
+#include <stdio.h>
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
 #include "bit_macros.h"
 #include "timer_driver.h"
 #include "uart.h"
+
 
 volatile int interruptcounter = 0;
 

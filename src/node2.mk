@@ -9,7 +9,10 @@ SOURCE_FILES := uart.c \
 				TWI_driver.c \
 				game_logic_driver.c \
 				solenoid_driver.c \
-				testSolenoid_node2.c
+				motor_driver.c \
+				pid.c \
+				testMotor.c
+				#testSolenoid_node2.c
 				# motor_driver.c \
 				# pid.c \
 				testMotor.c
