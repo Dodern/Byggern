@@ -71,7 +71,7 @@ void motor_input_closed_loop(uint8_t player_input){
     // printf("motor_input_closed_loop: centered_input = %d\n\r", centered_input);
     int16_t current_position = encoder_get_scaled_position();
     // correct value upto here.
-    int16_t control_val = pid_controller(100,1,20, centered_input, current_position);
+    int16_t control_val = pid_controller(100,4,20, centered_input, current_position);
     // if (control_val < 0) {
     //     motor_set_direction(MOTOR_LEFT);
     // } else {

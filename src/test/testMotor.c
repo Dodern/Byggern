@@ -57,7 +57,7 @@ int main(void){
 
         //printf("Player inputs = %d\n\r", player_inputs[3]);
         //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100; i++) {
             motor_input_closed_loop(player_inputs[3]);
             _delay_ms(50);
         }

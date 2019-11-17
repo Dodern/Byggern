@@ -5,6 +5,8 @@
 #include "motor_driver.h"
 #include "encoder_driver.h"
 
+#define MAX_SUM_ERROR 15
+
 volatile int sum_error = 0;
 volatile int last_current_position = 0;
 
@@ -35,9 +37,15 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
     //printf("P-term = %d\n\r", p_term);
 
     // **** Calculate I term **** //
-    // temp = sum_error + errors;
-    // sum_error = temp;
-    // i_term = i * sum_error;
+    temp = sum_error + errors;
+    sum_error = temp;
+    i_term = i * sum_error;
+    if (sum_error > MAX_SUM_ERROR){
+		sum_error = MAX_SUM_ERROR;
+    } else if (sum_error < -MAX_SUM_ERROR){
+		sum_error = -MAX_SUM_ERROR;
+	}
+    
     // printf("sum_error = %d\n\r", sum_error);
     // printf("Temp = %d\n\r", temp);
     // printf("I-term = %d\n\r", i_term);
