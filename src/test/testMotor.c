@@ -29,9 +29,7 @@ ISR(BADISR_vect){
 }
 
 ISR(TIMER5_CAPT_vect){
-    uint8_t right_slider = player_inputs[3];
-    motor_input_closed_loop(right_slider);
-    // printf("In interrupt!\n\r");
+    motor_input_closed_loop(player_inputs[3]);
 }
 
 int main(void){
@@ -40,10 +38,11 @@ int main(void){
     servo_init();
     adc_init();
     TWI_Master_Initialise();
+    solenoid_init();
     motor_init();
     encoder_init();
     motor_timer_init();
-    solenoid_init();
+    
 
     sei();
 
@@ -55,33 +54,20 @@ int main(void){
     motor_calibrate();
     motor_start();
     motor_timer_start();
+    //motor_stop();
 
     while(1){
         message = can_read_message(0);
 
         game_util_receive_player_intputs(message, &player_inputs);
-        // for (int i = 0; i < 7; i++){
-        //     player_inputs[i] = message.data[i];
-        //     // printf("player_inputs[%d] = %d\n\r", i, message.data[i]);
-        // }
-
-        //printf("Player inputs = %d\n\r", player_inputs[3]);
-        //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
-        // for (int i = 0; i < 100; i++) {
-        //     motor_input_closed_loop(player_inputs[3]);
-        //     _delay_ms(50);
-        // }
-        
-        //motor_input_closed_loop(player_inputs[3]);
-        // int16_t current_position = encoder_get_scaled_position();
-        // printf("encoder_input_scaler - current position = %d\n\r", current_position);
 
         // Servo and Solenoid stuff
         if (player_inputs[5]){
             printf("Solenoid punch!\n\r");
+            _delay_ms(500);
             solenoid_punch();
         }
-        // servo_input(player_inputs[2]);
+        servo_input(player_inputs[2]);
         _delay_ms(1000);
     }
     return 0;

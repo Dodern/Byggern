@@ -53,9 +53,11 @@ void solenoid_punch(){
     }
 
     printf("Solenoid punch!\n\r");
+    cli();
     clear_bit(PORTH, SOLENOID_TRIG_PIN);
     _delay_ms(1500);
     set_bit(PORTH, SOLENOID_TRIG_PIN);
+    sei();
     // solenoid_timer_reset();
     solenoid_timer_start();
 }

@@ -49,17 +49,24 @@ int main(void){
         // printf("\n\r");
         // printf("\n\r");
 
+    int counter = 0;
+
     while (1) {
         adc_update_all_player_inputs(&player_inputs);
         // adc_print_current_position();
-        // for (int i = 0; i < 7; i++) {
-        //     printf("player_inputs[%d] = %d\n\r", i, player_inputs[i]);
-        // }
+        if (counter > 10) {
+            for (int i = 0; i < 7; i++) {
+                printf("player_inputs[%d] = %d\n\r", i, player_inputs[i]);
+            }
+            printf("\n\r");
+            counter = 0;
+        }
         // printf("\n\r");
         can_send_message(0, player_inputs_length, &player_inputs, 0);
         _delay_ms(100);
         // can_send_message(0b1, length2, &arr2, 1);
         // _delay_ms(50000);
+        counter++;
     }
     return 0;
 }
