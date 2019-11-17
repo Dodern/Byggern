@@ -67,17 +67,16 @@ void motor_input_open_loop(uint8_t joystick_input){
 }
 
 void motor_input_closed_loop(uint8_t player_input){
-    // int centered_input = ((player_input-128)/(255.0-128)*100);
-    int16_t centered_input = encoder_input_scaler(player_input, SLIDER_CENTER);
+    int16_t centered_input = encoder_input_scaler((int16_t)player_input, PLAYER_INPUT_MAX);
+    printf("motor_input_closed_loop: centered_input = %d\n\r", centered_input);
     int16_t current_position = encoder_get_scaled_position();
-    // printf("motor_encoder_Current position = %d\n\r", current_position);
-    // printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
-    int16_t control_val = pid_controller(80,1,20,(int16_t)centered_input, current_position);
-    if (control_val < 0) {
-        motor_set_direction(MOTOR_LEFT);
-    } else {
-        motor_set_direction(MOTOR_RIGHT);
-    }
+    // correct value upto here.
+    int16_t control_val = pid_controller(25,1,20, centered_input, current_position);
+    // if (control_val < 0) {
+    //     motor_set_direction(MOTOR_LEFT);
+    // } else {
+    //     motor_set_direction(MOTOR_RIGHT);
+    // }
     // if (joystick_input < current_placement) {
     //     motor_set_direction(MOTOR_LEFT);
     // } else {

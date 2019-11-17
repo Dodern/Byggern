@@ -40,7 +40,6 @@ void motor_encoder_init();
 void motor_encoder_reset();
 int16_t motor_encoder_read();
 int16_t motor_get_scaled_position();
-int16_t motor_input_scaler(int16_t relative_input, int16_t maximum_input);
 
 void motor_init();
 void motor_stop();

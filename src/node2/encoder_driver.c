@@ -47,6 +47,7 @@ int16_t encoder_get_scaled_position(){
     return -scaled_position;
 }
 
+//functional!
 int16_t encoder_input_scaler(int16_t relative_input, int16_t maximum_input){
     int16_t scaled_input = floor(relative_input/(maximum_input/200.0)) - 100;
     return scaled_input;

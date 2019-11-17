@@ -43,7 +43,7 @@ int main(void){
     int16_t encoder = 0;
 
     motor_calibrate();
-    // motor_start();
+    motor_start();
     // motor_timer_start();
 
     while(1){
@@ -55,13 +55,11 @@ int main(void){
         //     // printf("player_inputs[%d] = %d\n\r", i, message.data[i]);
         // }
 
-
         //printf("Player inputs = %d\n\r", player_inputs[3]);
         //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
-        motor_input_closed_loop(encoder_input_scaler(player_inputs[3], PLAYER_INPUT_MAX));
+        motor_input_closed_loop(player_inputs[3]);
         int16_t current_position = encoder_get_scaled_position();
         printf("encoder_input_scaler - current position = %d\n\r", current_position);
-
 
         // Servo and Solenoid stuff
         if (player_inputs[5]){
