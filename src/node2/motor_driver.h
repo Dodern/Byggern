@@ -14,8 +14,8 @@
 // For the motor and inputs
 #define SLIDER_CENTER 128
 #define PLAYER_INPUT_MAX 255
-#define MOTOR_LEFT 1
-#define MOTOR_RIGHT 0
+#define MOTOR_LEFT 0
+#define MOTOR_RIGHT 1
 
 // For the encoder
 #define PORT_MJ1 PORTH

@@ -8,6 +8,7 @@
 #include "encoder_driver.h"
 #include "uart.h"
 
+// This is the POSITIVE value for range
 volatile int16_t motor_encoder_range = 0;
 
 // ******* Encoder Functions ********* //
@@ -53,4 +54,5 @@ int16_t encoder_input_scaler(int16_t relative_input, int16_t maximum_input){
 
 void encoder_set_motor_range(int16_t motor_encoder_data){
     motor_encoder_range = motor_encoder_data;
+    printf("encoder_set_motor: %d\n\r", motor_encoder_range);
 }

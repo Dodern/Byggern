@@ -42,7 +42,7 @@ void motor_send_input(uint8_t motor_input){
 void motor_calibrate(){
     motor_start();
     int16_t encoder_max_val = 0;
-    motor_set_direction(MOTOR_RIGHT);
+    motor_set_direction(MOTOR_LEFT);
     motor_send_input(90);
     int16_t encoderval = encoder_read();
     _delay_ms(12000);
@@ -50,14 +50,14 @@ void motor_calibrate(){
     _delay_ms(10000);
     motor_start();
     encoder_reset();
-    motor_set_direction(MOTOR_LEFT);
+    motor_set_direction(MOTOR_RIGHT);
     motor_send_input(90);
     _delay_ms(50000);
     encoder_max_val = encoder_read();
-    printf("Encoder max val = %d\n\r", encoder_max_val);
     // TODO: Add in move to center function via PID control.
     motor_stop();
     encoder_reset();
+    printf("Encoder max val in motor_calibrate = %d\n\r", encoder_max_val);
     encoder_set_motor_range(-encoder_max_val);
 }
 
@@ -70,18 +70,18 @@ void motor_input_closed_loop(uint8_t player_input){
     // int centered_input = ((player_input-128)/(255.0-128)*100);
     int16_t centered_input = encoder_input_scaler(player_input, SLIDER_CENTER);
     int16_t current_position = encoder_get_scaled_position();
-    printf("________Current position = %d\n\r", current_position);
+    // printf("motor_encoder_Current position = %d\n\r", current_position);
     // printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
     int16_t control_val = pid_controller(80,1,20,(int16_t)centered_input, current_position);
     if (control_val < 0) {
-        motor_set_direction(MOTOR_RIGHT);
-    } else {
         motor_set_direction(MOTOR_LEFT);
+    } else {
+        motor_set_direction(MOTOR_RIGHT);
     }
     // if (joystick_input < current_placement) {
-    //     motor_set_direction(MOTOR_RIGHT);
-    // } else {
     //     motor_set_direction(MOTOR_LEFT);
+    // } else {
+    //     motor_set_direction(MOTOR_RIGHT);
     // }
     uint8_t motor_input = (uint8_t)abs(control_val);
     // printf("motor input: %d\n\r", motor_input);

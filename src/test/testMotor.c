@@ -22,8 +22,6 @@
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 
-#define TEST_SET_OUTPUT_LENGTH 3
-
 volatile uint8_t player_inputs[7];
 
 int main(void){
@@ -45,13 +43,11 @@ int main(void){
     int16_t encoder = 0;
 
     motor_calibrate();
-    motor_start();
+    // motor_start();
+    // motor_timer_start();
 
     while(1){
         message = can_read_message(0);
-        if (player_inputs[3] - message.data[3] >= 10){
-            motor_timer_start();
-        }
 
         game_util_receive_player_intputs(message, &player_inputs);
         // for (int i = 0; i < 7; i++){
@@ -62,15 +58,18 @@ int main(void){
 
         //printf("Player inputs = %d\n\r", player_inputs[3]);
         //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
+        motor_input_closed_loop(encoder_input_scaler(player_inputs[3], PLAYER_INPUT_MAX));
+        int16_t current_position = encoder_get_scaled_position();
+        printf("encoder_input_scaler - current position = %d\n\r", current_position);
 
+
+        // Servo and Solenoid stuff
         if (player_inputs[5]){
             printf("Solenoid punch!\n\r");
             solenoid_punch();
         }
-
-        motor_input_closed_loop(encoder_input_scaler(player_inputs[3], PLAYER_INPUT_MAX));
-        servo_input(player_inputs[2]);
-        _delay_ms(1000);
+        // servo_input(player_inputs[2]);
+        _delay_ms(10000);
     }
     return 0;
 }
