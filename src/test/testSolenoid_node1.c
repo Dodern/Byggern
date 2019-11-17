@@ -31,10 +31,10 @@ int main(void){
 
     while(1){
         left_button[0] = adc_is_left_button_pressed();
-        printf("left button = %d\n\r", left_button[0]);
-        printf("length = %d\n\r", length);
+        // printf("left button = %d\n\r", left_button[0]);
+        // printf("length = %d\n\r", length);
         can_send_message(0, length, &left_button, 0);
-        _delay_ms(5000);
+        _delay_ms(100);
     }
     return 0;
 }

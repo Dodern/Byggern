@@ -24,6 +24,16 @@
 
 volatile uint8_t player_inputs[7];
 
+ISR(BADISR_vect){
+    printf("BAD ISR\n\r");
+}
+
+ISR(TIMER5_CAPT_vect){
+    uint8_t right_slider = player_inputs[3];
+    motor_input_closed_loop(right_slider);
+    // printf("In interrupt!\n\r");
+}
+
 int main(void){
     USART_Init ( MYUBRR );
     can_controller_init();
@@ -44,7 +54,7 @@ int main(void){
 
     motor_calibrate();
     motor_start();
-    // motor_timer_start();
+    motor_timer_start();
 
     while(1){
         message = can_read_message(0);
@@ -57,14 +67,14 @@ int main(void){
 
         //printf("Player inputs = %d\n\r", player_inputs[3]);
         //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
-        for (int i = 0; i < 100; i++) {
-            motor_input_closed_loop(player_inputs[3]);
-            _delay_ms(50);
-        }
+        // for (int i = 0; i < 100; i++) {
+        //     motor_input_closed_loop(player_inputs[3]);
+        //     _delay_ms(50);
+        // }
         
         //motor_input_closed_loop(player_inputs[3]);
-        int16_t current_position = encoder_get_scaled_position();
-        printf("encoder_input_scaler - current position = %d\n\r", current_position);
+        // int16_t current_position = encoder_get_scaled_position();
+        // printf("encoder_input_scaler - current position = %d\n\r", current_position);
 
         // Servo and Solenoid stuff
         if (player_inputs[5]){
@@ -72,17 +82,7 @@ int main(void){
             solenoid_punch();
         }
         // servo_input(player_inputs[2]);
-        // _delay_ms(10000);
+        _delay_ms(1000);
     }
     return 0;
 }
-
-ISR(BADISR_vect){
-    printf("BAD ISR\n\r");
-}
-
-// ISR(TIMER5_CAPT_vect){
-//     uint8_t right_slider = player_inputs[3];
-//     motor_input_closed_loop(right_slider);
-//     printf("In interrupt!\n\r");
-// }

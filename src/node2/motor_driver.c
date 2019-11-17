@@ -102,7 +102,7 @@ void motor_timer_init(){
     set_bit(TCCR5B, WGM52); // Clear timer on compare match bit 2 
     set_bit(TCCR5B, WGM53); // Clear timer on compare match bit 3
     set_bit(TCCR5B, CS52); // Clk active with prescaling to clk/256
-    ICR5 = 0b0111110000110101; // Set TOP to 3125 (1/20 second)
+    ICR5 = 0b0000110000110101; // Set TOP to 3125 (1/20 second)
     motor_timer_stop();
     //Output
     printf("TCCR5B = %d\n\r", TCCR5B);
