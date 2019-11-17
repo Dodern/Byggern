@@ -11,6 +11,12 @@
 #define DAC_COMMAND_ADDRESS 0b00000000
 #define I2C_LENGTH 3
 
+// For the motor and inputs
+#define SLIDER_CENTER 128
+#define PLAYER_INPUT_MAX 255
+#define MOTOR_LEFT 1
+#define MOTOR_RIGHT 0
+
 // For the encoder
 #define PORT_MJ1 PORTH
 #define MJ1_DIR PH1
@@ -29,23 +35,26 @@
 #define MJ2_DO6 PK6 //A14
 #define MJ2_DO7 PK7 //A15
 
-void encoder_init();
-void encoder_reset();
-int16_t read_encoder();
-int16_t motor_encoder_read_scaled();
+//Encoder functions and Input
+void motor_encoder_init();
+void motor_encoder_reset();
+int16_t motor_encoder_read();
+int16_t motor_get_scaled_position();
+int16_t motor_input_scaler(int16_t relative_input, int16_t maximum_input);
+
 void motor_init();
-void stop_motor();
-void start_motor();
-void set_motor_direction(uint8_t direction);
-void send_i2c_motor_input(uint8_t motor_input);
+void motor_stop();
+void motor_start();
+void motor_set_direction(uint8_t direction);
+void motor_send_input(uint8_t motor_input);
+void motor_calibrate();
 void motor_input_open_loop(uint8_t joystick_input);
 void motor_input_closed_loop(uint8_t joystick_input);
-void motor_calibrate();
 void motor_timer_init();
 void motor_timer_reset();
-void motor_read_timer();
+void motor_timer_read();
 void motor_timer_start();
 void motor_timer_stop();
-int16_t motor_pos_diff(uint8_t joystick_input);
+//int16_t motor_pos_diff(uint8_t joystick_input);
 
 #endif

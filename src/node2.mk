@@ -8,6 +8,7 @@ SOURCE_FILES := uart.c \
 				servo_driver.c \
 				TWI_driver.c \
 				game_logic_driver.c \
+				game_utilities.c \
 				solenoid_driver.c \
 				motor_driver.c \
 				pid.c \

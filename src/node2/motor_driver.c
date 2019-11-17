@@ -12,48 +12,50 @@
 
 volatile int16_t motor_encoder_range = 0;
 
-#define SLIDER_CENTER 128
+// ******* Encoder Functions ********* //
 
-void encoder_init(){
+void motor_encoder_init(){
     // Sets all pins in PORTC to input
     DDRK &= ~0xFF;
-    encoder_reset();
+    motor_encoder_reset();
 }
 
-void encoder_reset(){
+void motor_encoder_reset(){
     clear_bit(PORT_MJ1, MJ1_RST);
     _delay_us(200);
     set_bit(PORT_MJ1, MJ1_RST);      // Toggle reset on and off
 }
 
-int16_t read_encoder(){
+int16_t motor_encoder_read(){
     clear_bit(PORT_MJ1, MJ1_OE); // Enable output of encoder
     clear_bit(PORT_MJ1, MJ1_SEL); // Select high byte
-    // printf("MJ_SEL = %d\n\r", PORT_MJ1);
     _delay_ms(1);
-    //_delay_us(125);
     uint8_t highbyte = PIN_MJ2; // READ MSB
-    //printf("Highbyte = %d\n\r", highbyte);
     set_bit(PORT_MJ1, MJ1_SEL); // Select low byte
-    // printf("MJ_SEL = %d\n\r", PORT_MJ1);
     _delay_ms(1);
-    //_delay_us(125);
     uint8_t lowbyte = PIN_MJ2; // READ LSB
-    //printf("Lowbyte = %d\n\r", lowbyte);
-    //encoder_reset();
+    //motor_encoder_reset();
     set_bit(PORT_MJ1, MJ1_OE); // Disable output of encoder
     int16_t databyte = (highbyte << 8) | (lowbyte & 0xff);
-    //int16_t databyte = (highbyte << 8) | lowbyte; 
-    return databyte;   
+    return databyte;
 }
 
-int16_t motor_encoder_read_scaled(){
-    int16_t raw_read = read_encoder();
-    int scale_factor = floor(-motor_encoder_range/200 ); //new resolution is 200, -100 to 100
-    int16_t scaled_position = floor(raw_read/scale_factor) - 100;
-    // int16_t scaled_position = floor(raw_read/floor(-motor_encoder_range/200)) - 100; //new resolution is 200, -100 to 100
+int16_t motor_get_scaled_position(){
+    int16_t raw_encoder_read = motor_encoder_read();
+    // int scale_factor = floor(); //new resolution is 200, -100 to 100
+    // int16_t scaled_position = floor(raw_read/(-motor_encoder_range/200)) - 100;
+    int16_t scaled_position = motor_input_scaler(raw_encoder_read, motor_encoder_range);
     return -scaled_position;
 }
+
+int16_t motor_input_scaler(int16_t relative_input, int16_t maximum_input){
+    int16_t scaled_input = floor(relative_input/(maximum_input/200.0)) - 100;
+    return scaled_input;
+}
+
+
+
+// ******* Motor Functions ********* //
 
 void motor_init(){
     // Sets MJ1_EN, MJ1_OE, MJ1_RST, MJ1_DIR and MJ1_SEL to output
@@ -61,15 +63,15 @@ void motor_init(){
     set_bit(PORT_MJ1, MJ1_EN);
 }
 
-void stop_motor(){
+void motor_stop(){
     clear_bit(PORT_MJ1, MJ1_EN);
 }
 
-void start_motor(){
+void motor_start(){
     set_bit(PORT_MJ1, MJ1_EN);
 }
 
-void set_motor_direction(uint8_t direction){
+void motor_set_direction(uint8_t direction){
     if (direction == 1){
         set_bit(PORT_MJ1, MJ1_DIR);
     } else{
@@ -77,67 +79,59 @@ void set_motor_direction(uint8_t direction){
     }
 }
 
-void send_i2c_motor_input(uint8_t motor_input){
+void motor_send_input(uint8_t motor_input){
     unsigned char i2c_message[] = {DAC_ADDRESS, DAC_COMMAND_ADDRESS, motor_input};
     TWI_Start_Transceiver_With_Data(i2c_message, I2C_LENGTH);
+}
+
+void motor_calibrate(){
+    motor_start();
+    int16_t encoder_max_val = 0;
+    motor_set_direction(MOTOR_RIGHT);
+    motor_send_input(90);
+    int16_t encoderval = motor_encoder_read();
+    _delay_ms(12000);
+    motor_stop();
+    _delay_ms(10000);
+    motor_start();
+    motor_encoder_reset();
+    motor_set_direction(MOTOR_LEFT);
+    motor_send_input(90);
+    _delay_ms(50000);
+    encoder_max_val = motor_encoder_read();
+    printf("Encoder max val = %d\n\r", encoder_max_val);
+    // TODO: Add in move to center function via PID control.
+    motor_stop();
+    motor_encoder_reset();
+    motor_encoder_range = -encoder_max_val;
 }
 
 void motor_input_open_loop(uint8_t joystick_input){
     // Slave address 0101000
     // Joystick_input between 0 - 255
-
 }
 
-void motor_input_closed_loop(uint8_t joystick_input){
-    int centered_input = ((joystick_input-128)/(255.0-128)*100);
-    int16_t current_placement = motor_encoder_read_scaled();
-    printf("________Current placement = %d\n\r", current_placement);
+void motor_input_closed_loop(uint8_t player_input){
+    // int centered_input = ((player_input-128)/(255.0-128)*100);
+    int16_t centered_input = motor_input_scaler(player_input, SLIDER_CENTER);
+    int16_t current_position = motor_get_scaled_position();
+    printf("________Current position = %d\n\r", current_position);
     // printf("Casta joystick input = %d\n\r", (int16_t)joystick_input);
-    int16_t control_val = pid_controller(80,1,20,(int16_t)centered_input, current_placement);
+    int16_t control_val = pid_controller(80,1,20,(int16_t)centered_input, current_position);
     if (control_val < 0) {
-        set_motor_direction(0);
+        motor_set_direction(MOTOR_RIGHT);
     } else {
-        set_motor_direction(1);
+        motor_set_direction(MOTOR_LEFT);
     }
     // if (joystick_input < current_placement) {
-    //     set_motor_direction(0);
+    //     motor_set_direction(MOTOR_RIGHT);
     // } else {
-    //     set_motor_direction(1);
+    //     motor_set_direction(MOTOR_LEFT);
     // }
-    // uint16_t conversion_test = abs(controlval);
-    // printf("Control value = %d\n\r", controlval);
-    // printf("Conversion Control value = %u\n\r", conversion_test);
     uint8_t motor_input = (uint8_t)abs(control_val);
     // printf("motor input: %d\n\r", motor_input);
-    send_i2c_motor_input(motor_input);
+    motor_send_input(motor_input);
 }
-
-void motor_calibrate(){
-    start_motor();
-    int16_t encoder_max_val = 0;
-    set_motor_direction(0);
-    send_i2c_motor_input(90);
-    int16_t encoderval = read_encoder();
-    _delay_ms(12000);
-    stop_motor();
-    _delay_ms(10000);
-    start_motor();
-    encoder_reset();
-    set_motor_direction(1);
-    send_i2c_motor_input(90);
-    _delay_ms(50000);
-    encoder_max_val = read_encoder();
-    printf("Encoder max val = %d\n\r", encoder_max_val);
-    // TODO: Add in move to center function via PID control.
-    stop_motor();
-    encoder_reset();
-    motor_encoder_range = encoder_max_val;
-}
-
-
-// void motor_encoder_raw_to_scaled(raw_read, motor_encoder_range){
-//     return floor(raw_read/floor(-motor_encoder_range/200)) - 100;
-// }
 
 void motor_timer_init(){
     //Disabling interrupts while setting up
@@ -165,7 +159,7 @@ void motor_timer_reset(){
     //printf("TCNT5 = %d\n\r", TCNT5);
 }
 
-void motor_read_timer(){
+void motor_timer_read(){
     printf("TCNT5 = %u\n\r", TCNT5);
 }
 
