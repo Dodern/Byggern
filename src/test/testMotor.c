@@ -13,6 +13,7 @@
 #include "adc_driver.h"
 #include "TWI_driver.h"
 #include "motor_driver.h"
+#include "encoder_driver.h"
 #include "pid.h"
 #include "solenoid_driver.h"
 #include "game_utilities.h"
@@ -32,7 +33,7 @@ int main(void){
     adc_init();
     TWI_Master_Initialise();
     motor_init();
-    motor_encoder_init();
+    encoder_init();
     motor_timer_init();
     solenoid_init();
 
@@ -67,7 +68,7 @@ int main(void){
             solenoid_punch();
         }
 
-        motor_input_closed_loop(motor_input_scaler(player_inputs[3], PLAYER_INPUT_MAX));
+        motor_input_closed_loop(encoder_input_scaler(player_inputs[3], PLAYER_INPUT_MAX));
         servo_input(player_inputs[2]);
         _delay_ms(1000);
     }
@@ -78,8 +79,8 @@ ISR(BADISR_vect){
     printf("BAD ISR\n\r");
 }
 
-ISR(TIMER5_CAPT_vect){
-    uint8_t right_slider = player_inputs[3];
-    motor_input_closed_loop(right_slider);
-    printf("In interrupt!\n\r");
-}
+// ISR(TIMER5_CAPT_vect){
+//     uint8_t right_slider = player_inputs[3];
+//     motor_input_closed_loop(right_slider);
+//     printf("In interrupt!\n\r");
+// }

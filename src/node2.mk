@@ -11,6 +11,7 @@ SOURCE_FILES := uart.c \
 				game_utilities.c \
 				solenoid_driver.c \
 				motor_driver.c \
+				encoder_driver.c \
 				pid.c \
 				testMotor.c
 				#testSolenoid_node2.c
