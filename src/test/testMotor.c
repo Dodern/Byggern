@@ -57,7 +57,12 @@ int main(void){
 
         //printf("Player inputs = %d\n\r", player_inputs[3]);
         //printf("Diff main = %d\n\r", motor_pos_diff(player_inputs[3]));
-        motor_input_closed_loop(player_inputs[3]);
+        for (int i = 0; i < 1000; i++) {
+            motor_input_closed_loop(player_inputs[3]);
+            _delay_ms(50);
+        }
+        
+        //motor_input_closed_loop(player_inputs[3]);
         int16_t current_position = encoder_get_scaled_position();
         printf("encoder_input_scaler - current position = %d\n\r", current_position);
 
@@ -67,7 +72,7 @@ int main(void){
             solenoid_punch();
         }
         // servo_input(player_inputs[2]);
-        _delay_ms(10000);
+        // _delay_ms(10000);
     }
     return 0;
 }

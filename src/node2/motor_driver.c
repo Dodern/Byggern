@@ -68,10 +68,10 @@ void motor_input_open_loop(uint8_t joystick_input){
 
 void motor_input_closed_loop(uint8_t player_input){
     int16_t centered_input = encoder_input_scaler((int16_t)player_input, PLAYER_INPUT_MAX);
-    printf("motor_input_closed_loop: centered_input = %d\n\r", centered_input);
+    // printf("motor_input_closed_loop: centered_input = %d\n\r", centered_input);
     int16_t current_position = encoder_get_scaled_position();
     // correct value upto here.
-    int16_t control_val = pid_controller(25,1,20, centered_input, current_position);
+    int16_t control_val = pid_controller(100,1,20, centered_input, current_position);
     // if (control_val < 0) {
     //     motor_set_direction(MOTOR_LEFT);
     // } else {

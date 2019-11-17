@@ -28,11 +28,11 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
     int32_t d_term = 0;
 
     errors = set_point - current_position;
-    printf("Errors = %d\n\r", errors);
+    //printf("Errors = %d\n\r", errors);
 
     // **** Calculate P term **** //
     p_term = p * errors;
-    // printf("P-term = %d\n\r", p_term);
+    //printf("P-term = %d\n\r", p_term);
 
     // **** Calculate I term **** //
     // temp = sum_error + errors;
@@ -60,8 +60,6 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
     int16_t ret_abs = abs(ret);
 
     ret_abs = ret_abs + 40;
-    // scale ret
-    // (0-50)... + 50
 
     // LIMITER
     if (ret_abs > 100) {
@@ -79,8 +77,8 @@ int16_t pid_controller(int p, int i, int d, int16_t set_point, int16_t current_p
     // }
 
 
-    printf("Ret = %d\n\r", ret);
-    printf("Ret_abs = %d\n\r", ret_abs);
+    //printf("Ret = %d\n\r", ret);
+    //printf("Ret_abs = %d\n\r", ret_abs);
 
     return ((int16_t)ret_abs);
 }
