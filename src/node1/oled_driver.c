@@ -142,10 +142,27 @@ void oled_line_end(){
 }
 
 void oled_print_main_menu(){
-    menu_length = 2;
+    menu_length = 3;
     oled_print_string("Play Game");
     oled_line_end();
     oled_print_string("Test SRAM");
     oled_line_end();
+    oled_print_string("Stop Game");
+    oled_line_end();
     oled_clear_to_end();
+}
+
+int oled_menu_select(int prev_selection){
+    if (pointer_pos == 0 && (adc_is_joystick_button_pressed() || prev_selection == 1)){
+        return 1;
+    }
+    if (pointer_pos == 1 && (adc_is_joystick_button_pressed() || prev_selection == 2)){
+        return 2;
+    } 
+    if (pointer_pos == 2 && (adc_is_joystick_button_pressed() || prev_selection == 3)){
+        return 3;
+    }
+    else {
+        return prev_selection;
+    }
 }

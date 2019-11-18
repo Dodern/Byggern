@@ -21,5 +21,6 @@ void oled_print_main_menu();
 void oled_pos();
 void oled_line_end();
 void oled_print_picture();
+int oled_menu_select();
 
 #endif
