@@ -5,5 +5,6 @@
 #include <stdlib.h>
 
 void SRAM_test(void);
+void SRAM_test_can(void);
 
 #endif

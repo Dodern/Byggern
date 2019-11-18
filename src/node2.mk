@@ -7,13 +7,15 @@ SOURCE_FILES := uart.c \
 				adc_driver.c \
 				servo_driver.c \
 				TWI_driver.c \
-				game_logic_driver.c \
-				game_utilities.c \
 				solenoid_driver.c \
 				motor_driver.c \
 				encoder_driver.c \
 				pid.c \
-				testMotor.c
+				game_utilities.c \
+				game_logic_driver.c \
+				main_node2.c
+				#testInterrupt_node2.c
+				# testMotor.c
 				#testSolenoid_node2.c
 				# motor_driver.c \
 				# pid.c \

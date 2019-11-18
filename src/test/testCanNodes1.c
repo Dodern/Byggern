@@ -14,6 +14,7 @@
 #include "mcp2515.h"
 #include "can_controller_driver.h"
 #include "can_driver.h"
+#include "testSRAM.h"
 
 #define FOSC 4915200 // Clock Speed
 #define BAUD 9600
@@ -32,45 +33,45 @@ int main(void){
 
     can_controller_init();
 
+    _delay_ms(15000);
+    
+
     uint8_t player_inputs[7];
     int player_inputs_length = SIZE(player_inputs);
+    uint8_t arr[1];
+    arr[0] = 1;
 
-    uint8_t arr[] = {0b01010101, 0b01001111, 0b01001011, 0b0111100}; //85, 79, 75, 60
-    uint8_t arr2[] = {0b01011101, 0b0100101, 0b01101011, 0b0111110}; //93, 37, 107, 62
-    uint8_t arr3[] = {0,0};
-    int length = SIZE(arr);
-    int length2 = SIZE(arr2);
-    int length3 = SIZE(arr3);
-
-        // printf("\n\r");
-        // printf("Arr 3 = %d\n\r", arr3[0]);
-        // printf("\n\r");
-        // printf("Arr 3 = %d\n\r", arr3[1]);
-        // printf("\n\r");
-        // printf("\n\r");
+    struct can_message message;
 
     int counter = 0;
 
     while (1) {
+        oled_print_main_menu();
+        oled_move_pointer(adc_get_joystick_direction());
         adc_update_all_player_inputs(&player_inputs);
-        // adc_print_current_position();
-        // player_inputs[2] = 255;
-        // player_inputs[3] = 130; 
-        // player_inputs[5] = 1; 
-        if (counter > 10) {
-            for (int i = 0; i < 7; i++) {
-                //player_inputs[i] = 0;
-                printf("player_inputs[%d] = %d\n\r", i, player_inputs[i]);
+        printf("Oled menu select = %d\n\r", oled_menu_select());
+        if (oled_menu_select() == 1){
+            if (counter > 10) {
+                for (int i = 0; i < 7; i++) {
+                    printf("player_inputs[%d] = %d\n\r", i, player_inputs[i]);
+                }
+                printf("\n\r");
+                counter = 0;
             }
-            printf("\n\r");
-            counter = 0;
+            can_send_message(0, player_inputs_length, &player_inputs, 1);
+            counter++;
         }
-        // printf("\n\r");
-        can_send_message(0, player_inputs_length, &player_inputs, 1);
-        _delay_ms(100);
-        // can_send_message(0b1, length2, &arr2, 1);
-        // _delay_ms(50000);
-        counter++;
+        else if (oled_menu_select() == 2){
+            printf("Test SRAM!\n\r");
+            can_send_message(10, 1, &arr, 0);
+            message = can_read_message(0);
+            if (message.id == 5){
+                for (int i = 0; i < 2; i++){
+                printf("SRAM error %d = %d\n\r", i , message.data[i]);
+                }
+            }
+        }
+        _delay_ms(1000);
     }
     return 0;
 }

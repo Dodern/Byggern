@@ -4,14 +4,8 @@ SOURCE_FILES := uart.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				testCanNodes3.c
-				#testSRAM.c \
-				testLatchOutput.c
-				# testSolenoid_node1.c
-				#testInterrupt.c
-				# testTimer_node1.c
-				
-				#testADC.c
+				testSRAM.c \
+				main_node3.c
 				
 
 # Set this flag to "yes" (no quotes) to use JTAG; otherwise ISP (SPI) is used
