@@ -9,22 +9,29 @@
 
 #if defined (__AVR_ATmega2560__)
     #include "game_utilities.h"
+
+    extern volatile uint8_t can_receive_state;
+
+    ISR(CAN_INTERRUPT_VECTOR){
+        cli();
+        //Clearing flags
+
+        // Work
+        // printf("CAN Interrupt: You've got mail!\n\r");
+
+        struct can_message message = can_read_message(0);
+        can_receive_state = message.id;
+        // printf("message.id = %d\n\r", );
+        
+        // game_util_can_receive_parser(message);
+
+        // _delay_ms(10000);
+        can_controller_clear_receive_interrupt_flag();
+        // set_bit(CAN_INTERRUPT_FLAG_REG, CAN_INTERRUPT_PIN);
+        sei();
+    }
+
 #endif
-
-ISR(CAN_INTERRUPT_VECTOR){
-    // cli();
-    //Clearing flags
-
-    // Work
-    printf("CAN Interrupt triggered!\n\r");
-    // struct can_message message = can_read_message(0);
-    // game_util_can_receive_parser(message);
-
-    _delay_ms(10000);
-    // can_controller_clear_receive_interrupt_flag();
-    // set_bit(CAN_INTERRUPT_FLAG_REG, CAN_INTERRUPT_PIN);
-    // sei();
-}
 
 void can_send_message(int id, int length, uint8_t* arr, int transmit_line){ 
     struct can_message message;
