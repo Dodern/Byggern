@@ -1,8 +1,30 @@
+#include <avr/interrupt.h>
+#include <util/delay.h>
+
 #include "can_controller_driver.h"
 #include "can_driver.h"
 #include "mcp2515.h"
 #include "uart.h"
 #include "bit_macros.h"
+
+#if defined (__AVR_ATmega2560__)
+    #include "game_utilities.h"
+#endif
+
+ISR(CAN_INTERRUPT_VECTOR){
+    // cli();
+    //Clearing flags
+
+    // Work
+    printf("CAN Interrupt triggered!\n\r");
+    // struct can_message message = can_read_message(0);
+    // game_util_can_receive_parser(message);
+
+    _delay_ms(10000);
+    // can_controller_clear_receive_interrupt_flag();
+    // set_bit(CAN_INTERRUPT_FLAG_REG, CAN_INTERRUPT_PIN);
+    // sei();
+}
 
 void can_send_message(int id, int length, uint8_t* arr, int transmit_line){ 
     struct can_message message;

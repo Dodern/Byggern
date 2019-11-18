@@ -191,4 +191,15 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_RXB0D0      0b01100110
 #define MCP_RXB1D0      0b01110110
 
+// CANINTF Register Bits
+
+#define MCP_RX0IE		0x01
+#define MCP_RX1IE		0x02
+#define MCP_TX0IE		0x04
+#define MCP_TX1IE		0x08
+#define MCP_TX2IE		0x10
+#define MCP_ERRIE		0x20
+#define MCP_WAKIE		0x40
+#define MCP_MERRE		0x80
+
 #endif

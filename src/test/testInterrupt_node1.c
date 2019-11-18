@@ -19,12 +19,6 @@
 #define BAUD 9600
 #define MYUBRR FOSC/16/BAUD-1
 
-// **** Added defines
-#define SREG_I 7
-#define INT0_BIT 6
-#define INT1_BIT 7
-#define ISC00_BIT 0
-#define ISC01_BIT 1
 
 volatile int interrupt_count = 0;
 
@@ -53,7 +47,7 @@ int main(void){
 
     //Enabling interrupts;
     /* set_bit(SREG, SREG_I); */
-    set_bit(GICR, INT0_BIT);
+    set_bit(GICR, INT0);
     ////*** Have to check if the interrupt pin on MCP is active high or active low.
     /* // This sets the interrupts to be enabled detecting a rising edge */
     /* set_bit(MCUCR, ISC00); */

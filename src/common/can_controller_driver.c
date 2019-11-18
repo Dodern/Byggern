@@ -1,6 +1,8 @@
 #include <util/delay.h>
+#include <avr/interrupt.h>
 
 #include "uart.h"
+#include "bit_macros.h"
 #include "mcp2515.h"
 #include "spi_driver.h"
 #include "can_controller_driver.h"
@@ -22,11 +24,17 @@ int can_controller_init(){
         return 1;
     }
     
+    // **** Configurations for CAN **** //
+
+    // Enables CAN interrupt on RX line 0
+    can_controller_bit_modify(MCP_CANINTE, MCP_RX0IE, MCP_RX0IE);
+
     printf("MCP2515 is in configuration mode after reset!\n\r");
     // Sets the CAN to loopback mode
     //can_controller_bit_modify(MCP_CANCTRL,0b11100000, MODE_LOOPBACK);
     can_controller_bit_modify(MCP_CANCTRL,0b11100000, MODE_NORMAL);
     printf("MCP2515 is now in normal mode after reset!\n\r");
+    can_controller_interrupt_init();
 
     return 0;
 }
@@ -157,4 +165,30 @@ int can_controller_read_status() {
     spi_end_transmit(); // Deselect CAN-controller
 
     return read_status;
+}
+
+void can_controller_interrupt_init() {
+    cli();
+    // Setting the direction of interrupts
+    clear_bit(CAN_INTERRUPT_DIR_REG, CAN_INTERRUPT_PIN);
+    // Enabling interrupts 
+    #if defined (__AVR_ATmega162__)
+        printf("detected node1\n\r");
+        // Enabling specific interrupt
+        set_bit(GICR, INT0);
+        // This sets the interrupts to be enabled detecting a falling edge
+        clear_bit(MCUCR, ISC00);
+        set_bit(MCUCR, ISC01);
+    #elif defined (__AVR_ATmega2560__)
+        printf("detected node2\n\r");
+        // Enabling specific interrupt
+        set_bit(EIMSK, INT4);
+        // Setting the interrupt to trigger on logic low
+        clear_bit(EICRB, ISC40);
+        // clear_bit(EICRB, ISC41);
+        set_bit(EICRB, ISC41);
+    #endif
+}
+void can_controller_clear_receive_interrupt_flag(){
+    can_controller_bit_modify(MCP_CANINTF, MCP_RX0IF, 0x00);
 }
