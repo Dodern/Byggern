@@ -3,20 +3,37 @@
 #include <avr/io.h>
 
 #include "game_utilities.h"
+#include "can_driver.h"
 #include "uart.h"
+#include "motor_driver.h"
+#include "solenoid_driver.h"
 
 extern uint8_t player_inputs[7];
+extern uint8_t can_receive_state;
 
-void game_util_can_receive_parser(struct can_message message){
-	if (message.id == 0){
-		//printf("Message id = 0 \n\r");
-    	game_util_receive_player_inputs(message);
-	} else{
-		//printf("Message id = 1 \n\r");
-		for (int i = 0; i < message.length; i++){
-			//printf("Arr[%d] = %d\n\r", i, message.data[i]);
-		}
-		//printf("\n\r");
+void game_util_can_receive_parser(){
+	// printf("can_receive_state: %d\n\r");
+	struct can_message message = can_read_message(0);
+	switch (can_receive_state) {
+
+		case START_GAME:
+			cli();
+			// printf("Starting game\n\r");
+			game_logic_start_game();
+			sei();
+			break;
+
+		case PLAY_GAME:
+			// printf("playing\n\r");
+			game_util_receive_player_inputs(message);
+			game_logic_game_loop(message);
+			break;
+
+		default:
+			solenoid_timer_stop();
+			motor_timer_stop();
+			_delay_ms(1000);
+			break;
 	}
 }
 

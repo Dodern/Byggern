@@ -3,8 +3,11 @@
 
 #include <avr/io.h>
 #include <stdio.h>
+#include "can_controller_driver.h"
 
 void game_logic_update_score();
 int game_logic_get_score();
+void game_logic_start_game();
+void game_logic_game_loop(struct can_message message);
 
 #endif

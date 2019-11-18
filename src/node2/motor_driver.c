@@ -11,6 +11,7 @@
 #include "TWI_driver.h"
 #include "pid.h"
 
+extern uint8_t player_inputs[7];
 
 void motor_init(){
     // Sets MJ1_EN, MJ1_OE, MJ1_RST, MJ1_DIR and MJ1_SEL to output
@@ -47,6 +48,7 @@ void motor_send_input(uint8_t motor_input){
 }
 
 void motor_calibrate(){
+    cli();
     motor_start();
     int16_t encoder_max_val = 0;
     motor_set_direction(MOTOR_LEFT);

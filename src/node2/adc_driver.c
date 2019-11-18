@@ -1,4 +1,5 @@
 #include <avr/io.h>
+#include <avr/interrupt.h>
 
 #include "adc_driver.h"
 #include "uart.h"
@@ -22,6 +23,7 @@ void adc_init(){
 }
 
 int adc_read(){
+    //cli();
     set_bit(ADCSRA, ADSC); // To start conversion
     while (!read_bit(ADCSRA, ADIF)){}; // Waits until flag is set
 
@@ -30,6 +32,7 @@ int adc_read(){
     uint16_t data_high = ADCH;
     uint16_t data = (data_high << 8) | (data_low & 0xFF);
     // int data = data_low + data_high*0b10000000;
+    //sei();
     return data;
 }
 
