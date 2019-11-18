@@ -12,7 +12,7 @@ volatile int timer_state = 0;
 
 ISR(TIMER3_CAPT_vect){ 
     timer_state = 0; 
-    printf("Timer state = %d\n\r", timer_state); 
+    // printf("Timer state = %d\n\r", timer_state); 
     solenoid_timer_stop();
 } 
 

@@ -45,3 +45,11 @@ void servo_input(uint8_t pwm_input){
     }
     sei();
 }
+
+void servo_stop(){
+    clear_bit(TCCR1B, CS11);
+}
+
+void servo_start(){
+    set_bit(TCCR1B, CS11);
+}

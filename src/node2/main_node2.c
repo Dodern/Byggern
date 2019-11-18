@@ -56,6 +56,7 @@ int main(void){
     TWI_Master_Initialise();
     solenoid_init();
     motor_init();
+    game_logic_timer_init();
     encoder_init();
     motor_timer_init();
     //motor_calibrate();

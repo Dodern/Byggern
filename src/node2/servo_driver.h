@@ -6,5 +6,7 @@
 
 void servo_init();
 void servo_input(uint8_t pwm_input);
+void servo_stop();
+void servo_start();
 
 #endif

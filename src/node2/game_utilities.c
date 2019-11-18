@@ -7,9 +7,11 @@
 #include "uart.h"
 #include "motor_driver.h"
 #include "solenoid_driver.h"
+#include "servo_driver.h"
 
 extern uint8_t player_inputs[7];
 extern uint8_t can_receive_state;
+extern uint8_t game_score;
 
 void game_util_can_receive_parser(){
 	// printf("can_receive_state: %d\n\r");
@@ -30,6 +32,8 @@ void game_util_can_receive_parser(){
 			break;
 
 		default:
+			game_score = 0;
+			servo_stop();
 			solenoid_timer_stop();
 			motor_timer_stop();
 			_delay_ms(1000);

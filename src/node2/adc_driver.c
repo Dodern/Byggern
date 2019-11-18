@@ -6,6 +6,7 @@
 #include "bit_macros.h"
 
 void adc_init(){
+    // cli();
     clear_bit(DDRF, PF0); // Setting as input
     set_bit(ADCSRA, ADEN); // To enable the ADC
 
@@ -23,7 +24,7 @@ void adc_init(){
 }
 
 int adc_read(){
-    //cli();
+    // cli();
     set_bit(ADCSRA, ADSC); // To start conversion
     while (!read_bit(ADCSRA, ADIF)){}; // Waits until flag is set
 
@@ -32,7 +33,7 @@ int adc_read(){
     uint16_t data_high = ADCH;
     uint16_t data = (data_high << 8) | (data_low & 0xFF);
     // int data = data_low + data_high*0b10000000;
-    //sei();
+    // sei();
     return data;
 }
 

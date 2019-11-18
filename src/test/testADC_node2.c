@@ -18,7 +18,7 @@
 
 int main(void){
     USART_Init ( MYUBRR );
-    can_controller_init();
+    // can_controller_init();
     adc_init();
     // struct can_message message;
     while(1){
