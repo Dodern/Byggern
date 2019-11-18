@@ -1,12 +1,10 @@
 # List all source files to be compiled; separate with space
 SOURCE_FILES := uart.c \
 				xmem.c \
-				oled_driver.c \
-				adc_driver.c \
 				spi_driver.c \
 				can_controller_driver.c \
 				can_driver.c \
-				testCanNodes1.c
+				testCanNodes3.c
 				#testSRAM.c \
 				testLatchOutput.c
 				# testSolenoid_node1.c

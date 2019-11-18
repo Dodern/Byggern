@@ -142,14 +142,10 @@ void oled_line_end(){
 }
 
 void oled_print_main_menu(){
-    menu_length = 4;
-    oled_print_string("Herro");
+    menu_length = 2;
+    oled_print_string("Play Game");
     oled_line_end();
-    oled_print_string("Hello");
-    oled_line_end();
-    oled_print_string("Olav");
-    oled_line_end();
-    oled_print_string("Jacob");
+    oled_print_string("Test SRAM");
     oled_line_end();
     oled_clear_to_end();
 }

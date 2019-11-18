@@ -59,7 +59,9 @@ int main(void){
     while(1){
         message = can_read_message(0);
 
-        game_util_receive_player_intputs(message, &player_inputs);
+        game_util_can_receive_parser(message);
+        //game_util_receive_player_inputs(message, &player_inputs);
+        
 
         // Servo and Solenoid stuff
         if (player_inputs[5]){
