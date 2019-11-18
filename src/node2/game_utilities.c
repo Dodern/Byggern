@@ -19,10 +19,10 @@ void game_util_can_receive_parser(){
 	switch (can_receive_state) {
 
 		case START_GAME:
-			cli();
+			//cli();
 			// printf("Starting game\n\r");
 			game_logic_start_game();
-			sei();
+			//sei();
 			break;
 
 		case PLAY_GAME:

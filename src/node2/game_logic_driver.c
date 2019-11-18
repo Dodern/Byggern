@@ -12,36 +12,25 @@
 
 volatile uint8_t game_score;
 extern uint8_t player_inputs[7];
-volatile int score_timer_state = 0;
+// volatile int score_timer_state = 0;
 extern uint8_t can_receive_state;
 
-ISR(TIMER4_CAPT_vect){ 
-    score_timer_state = 0; 
-    printf("Score timer state = %d\n\r", score_timer_state); 
-    game_logic_timer_stop();
-} 
+// ISR(TIMER4_CAPT_vect){ 
+//     score_timer_state = 0; 
+//     printf("Score timer state = %d\n\r", score_timer_state); 
+//     game_logic_timer_stop();
+// } 
 
 
 void game_logic_update_score(){
     // adc_print();
     int adc_data = adc_read();
-    printf("score_timer_state: %d\n\r", score_timer_state);
+    // printf("score_timer_state: %d\n\r", score_timer_state);
     if (adc_data < 700){
-        if (!score_timer_state){
-            cli();
-            printf("Jeg oppdaterer Game Score\n\r");
-            game_score++;
-            game_logic_timer_start();
-            printf("Game score = %d\n\r", game_score);
-            sei();
-        }
-    }
-    if (game_score >= 3){
         can_receive_state = 2;
-        // printf("Game score = %d\n\r", game_score);
         printf("You lost!\n\r");
     }
-    game_logic_timer_read();
+    // game_logic_timer_read();
     _delay_ms(50);
 }
 
@@ -60,7 +49,7 @@ void game_logic_start_game(){
 }
 
 void game_logic_game_loop(struct can_message message){
-    if (player_inputs[5]){
+    if (player_inputs[5] && can_receive_state == 1){
         printf("Solenoid punch!\n\r");
         _delay_ms(500);
         solenoid_punch();
@@ -70,43 +59,43 @@ void game_logic_game_loop(struct can_message message){
     _delay_ms(1000);
 }
 
-void game_logic_timer_init(){
-    //Disabling interrupts while setting up
-    cli();
+// void game_logic_timer_init(){
+//     //Disabling interrupts while setting up
+//     cli();
 
-    // Interrupt
-    //set_bit(TIMSK3, TOIE3);
-    /* clear_bit(TIMSK3, ICIE3); */
-    set_bit(TIMSK4, ICIE4); // Enable interrupts when ICFn flag is set
+//     // Interrupt
+//     //set_bit(TIMSK3, TOIE3);
+//     /* clear_bit(TIMSK3, ICIE3); */
+//     set_bit(TIMSK4, ICIE4); // Enable interrupts when ICFn flag is set
 
-    // Timer
-    clear_bit(TCCR4A, COM4A0);
-    clear_bit(TCCR4A, COM4A1); // OC3A Disconnected
-    set_bit(TCCR4B, WGM42); // Clear timer on compare match bit 2 
-    set_bit(TCCR4B, WGM43); // Clear timer on compare match bit 3
-    set_bit(TCCR4B, CS42); // Clk active with prescaling to clk/256
-    ICR4 = 0b1111010000100100; // Set TOP to 3125 (1/20 second)
-    motor_timer_stop();
-    //Output
-    printf("TCCR4B = %d\n\r", TCCR4B);
-}
+//     // Timer
+//     clear_bit(TCCR4A, COM4A0);
+//     clear_bit(TCCR4A, COM4A1); // OC3A Disconnected
+//     set_bit(TCCR4B, WGM42); // Clear timer on compare match bit 2 
+//     set_bit(TCCR4B, WGM43); // Clear timer on compare match bit 3
+//     set_bit(TCCR4B, CS42); // Clk active with prescaling to clk/256
+//     ICR4 = 0b1111010000100100; // Set TOP to 3125 (1/20 second)
+//     motor_timer_stop();
+//     //Output
+//     printf("TCCR4B = %d\n\r", TCCR4B);
+// }
 
-void game_logic_timer_reset(){
-    TCNT4 = 0b0;
-    //printf("TCNT4 = %d\n\r", TCNT4);
-}
+// void game_logic_timer_reset(){
+//     TCNT4 = 0b0;
+//     //printf("TCNT4 = %d\n\r", TCNT4);
+// }
 
-void game_logic_timer_read(){
-    printf("TCNT4 = %u\n\r", TCNT4);
-}
+// void game_logic_timer_read(){
+//     printf("TCNT4 = %u\n\r", TCNT4);
+// }
 
-void game_logic_timer_start(){
-    score_timer_state = 1;
-    set_bit(TCCR4B, CS41);
-}
+// void game_logic_timer_start(){
+//     score_timer_state = 1;
+//     set_bit(TCCR4B, CS41);
+// }
 
-void game_logic_timer_stop(){
-    clear_bit(TCCR4B, CS40);
-    clear_bit(TCCR4B, CS41);
-    clear_bit(TCCR4B, CS42); // Clear clk bits
-}
+// void game_logic_timer_stop(){
+//     clear_bit(TCCR4B, CS40);
+//     clear_bit(TCCR4B, CS41);
+//     clear_bit(TCCR4B, CS42); // Clear clk bits
+// }
