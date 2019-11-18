@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <avr/interrupt.h>
 
 #include "bit_macros.h"
 #include "servo_driver.h"
@@ -8,6 +9,7 @@
 static uint8_t prev_pwm_input = 0;
 
 void servo_init(){
+    cli();
     set_bit(TCCR1A, COM1A1); // Clear OCnA/OCnB/OCnC on compare match, set OCnA/OCnB/OCnC at BOTTOM (non-inverting mode)
     set_bit(TCCR1A, WGM11); // PWM Fast mode bit 1
     set_bit(TCCR1B, CS11); // Clk active with prescaling to clk/8
@@ -24,6 +26,7 @@ void servo_init(){
 void servo_input(uint8_t pwm_input){
     // printf("pwm input %d\n\r", pwm_input);
     // printf("previous pwm input %d\n\r", pwm_input);
+    cli();
     if (abs(prev_pwm_input - pwm_input) > 20){
         // printf("inside if statement\n\r");
         // Set dutycyle to between 0.045 (0.9 ms, to the left) and 0.105 (2.1 ms, to the right)
@@ -40,4 +43,5 @@ void servo_input(uint8_t pwm_input){
         //printf("OCR1A = %d\n\r", OCR1A);
         prev_pwm_input = pwm_input;
     }
+    sei();
 }

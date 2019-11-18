@@ -14,24 +14,31 @@
 
 void motor_init(){
     // Sets MJ1_EN, MJ1_OE, MJ1_RST, MJ1_DIR and MJ1_SEL to output
+    cli();
     DDRH |= (1<<MJ1_EN) | (1<<MJ1_OE) | (1<<MJ1_RST) | (1<<MJ1_DIR) | (1<<MJ1_SEL);
     set_bit(PORT_MJ1, MJ1_EN);
 }
 
 void motor_stop(){
+    cli();
     clear_bit(PORT_MJ1, MJ1_EN);
+    sei();
 }
 
 void motor_start(){
+    cli();
     set_bit(PORT_MJ1, MJ1_EN);
+    sei();
 }
 
 void motor_set_direction(uint8_t direction){
+    cli();
     if (direction == 1){
         set_bit(PORT_MJ1, MJ1_DIR);
     } else{
         clear_bit(PORT_MJ1, MJ1_DIR);
     }
+    sei();
 }
 
 void motor_send_input(uint8_t motor_input){

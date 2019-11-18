@@ -22,12 +22,14 @@ ISR(TIMER3_CAPT_vect){
 // }
 
 void solenoid_init(){
+
+    cli();
     //Setting up trigger for Solenoid
     set_bit(DDRH, SOLENOID_TRIG_PIN); // Set the direction of solenoid trigger pin
     set_bit(PORTH, SOLENOID_TRIG_PIN); // Set the output initially high
 
     //Disabling interrupts while setting up
-    cli();
+    
 
     // Interrupt
     set_bit(TIMSK3, ICIE3); // Enable interrupts when ICFn flag is set

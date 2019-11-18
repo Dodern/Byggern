@@ -26,6 +26,7 @@ void encoder_reset(){
 }
 
 int16_t encoder_read(){
+    cli();
     clear_bit(PORT_MJ1, MJ1_OE); // Enable output of encoder
     clear_bit(PORT_MJ1, MJ1_SEL); // Select high byte
     _delay_ms(1);
@@ -36,6 +37,7 @@ int16_t encoder_read(){
     //encoder_reset();
     set_bit(PORT_MJ1, MJ1_OE); // Disable output of encoder
     int16_t databyte = (highbyte << 8) | (lowbyte & 0xff);
+    sei();
     return databyte;
 }
 
