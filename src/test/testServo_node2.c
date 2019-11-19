@@ -23,9 +23,9 @@ int main(void){
     while(1){
         message = can_read_message(0);
         for (int i = 0; i < message.length; i++){
-        printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
+            printf("CAN receive buffer 0 data %d\n\r", message.data[i]);
         }
-        timer_input(message.data[0]);
+        servo_input(message.data[2]);
         _delay_ms(1000);
     }
     return 0;

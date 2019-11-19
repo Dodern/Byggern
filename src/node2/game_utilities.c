@@ -29,7 +29,7 @@ void game_util_can_receive_parser(){
 
 		default:
 			game_score = 0;
-			servo_stop();
+			//servo_stop();
 			solenoid_timer_stop();
 			motor_timer_stop();
 			_delay_ms(1000);

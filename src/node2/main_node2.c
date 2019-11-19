@@ -50,14 +50,15 @@ int main(void){
     cli();
     USART_Init ( MYUBRR );
     can_controller_init();
-    servo_init();
+    //servo_init();
+    //servo_init_timer4();
     adc_init();
     TWI_Master_Initialise();
     solenoid_init();
     motor_init();
     encoder_init();
     motor_timer_init();
-    //Turning on interrupts
+    // Turning on interrupts
     sei();
 
     struct can_message message;
@@ -65,6 +66,10 @@ int main(void){
 
     while (1) {
         game_util_can_receive_parser();
+        // set_bit(PORTB, PB5);
+        // _delay_ms(50000);
+        // clear_bit(PORTB, PB5);
+        // _delay_ms(50000);
         _delay_ms(100);
     }
     return 0;

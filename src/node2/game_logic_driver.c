@@ -35,7 +35,7 @@ void game_logic_start_game(){
     printf("Starting motor\n\r");
     motor_start();
     motor_timer_start();
-    servo_start();
+    //servo_start();
 }
 
 void game_logic_game_loop(struct can_message message){
@@ -45,6 +45,6 @@ void game_logic_game_loop(struct can_message message){
         solenoid_punch();
     }
     game_logic_update_score();
-    servo_input(player_inputs[2]);
+    //servo_input_timer4(player_inputs[2]);
     _delay_ms(1000);
 }
