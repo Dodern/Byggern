@@ -8,6 +8,7 @@
 #include "servo_driver.h"
 #include "bit_macros.h"
 #include "motor_driver.h"
+#include "can_driver.h"
 #include "solenoid_driver.h"
 
 volatile uint8_t game_score;
@@ -27,8 +28,8 @@ void game_logic_update_score(){
     int adc_data = adc_read();
     // printf("score_timer_state: %d\n\r", score_timer_state);
     if (adc_data < 700){
-        can_receive_state = 2;
-        printf("You lost!\n\r");
+        // can_receive_state = STOP_GAME;
+        // printf("You lost!\n\r");
     }
     // game_logic_timer_read();
     _delay_ms(50);

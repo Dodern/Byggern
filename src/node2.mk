@@ -14,8 +14,8 @@ SOURCE_FILES := uart.c \
 				game_utilities.c \
 				game_logic_driver.c \
 				main_node2.c
-				#testInterrupt_node2.c
 				# testMotor.c
+				#testInterrupt_node2.c
 				#testSolenoid_node2.c
 				# motor_driver.c \
 				# pid.c \

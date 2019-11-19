@@ -68,7 +68,7 @@ int main(void){
                 break;
             case 2:
                 printf("Test SRAM!\n\r");
-                can_send_message(TEST_SRAM, 1, &arr, 0);
+                can_send_message(TEST_SRAM, 1, &arr, 1);
                 message = can_read_message(0); // Change to can interrupt for reading from SRAM test and game score
                 if (message.id == SRAM_TESTED){
                     for (int i = 0; i < 2; i++){

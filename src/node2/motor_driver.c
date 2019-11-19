@@ -67,7 +67,8 @@ void motor_calibrate(){
     motor_stop();
     encoder_reset();
     printf("Encoder max val in motor_calibrate = %d\n\r", encoder_max_val);
-    encoder_set_motor_range(-encoder_max_val);
+    // encoder_set_motor_range(-encoder_max_val);
+    encoder_set_motor_range(9300);
 }
 
 void motor_input_open_loop(uint8_t joystick_input){

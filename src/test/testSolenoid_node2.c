@@ -28,7 +28,7 @@ int main(void){
     struct can_message message;
 
     while(1){
-        //solenoid_punch();
+        // solenoid_punch();
         // printf("Node 2 alive\n\r");
         message = can_read_message(0);
         
