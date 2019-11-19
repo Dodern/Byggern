@@ -14,19 +14,15 @@ extern uint8_t can_receive_state;
 extern uint8_t game_score;
 
 void game_util_can_receive_parser(){
-	// printf("can_receive_state: %d\n\r");
 	struct can_message message = can_read_message(0);
 	switch (can_receive_state) {
 
 		case START_GAME:
-			//cli();
-			// printf("Starting game\n\r");
+			printf("Starting game\n\r");
 			game_logic_start_game();
-			//sei();
 			break;
 
 		case PLAY_GAME:
-			// printf("playing\n\r");
 			game_util_receive_player_inputs(message);
 			game_logic_game_loop(message);
 			break;

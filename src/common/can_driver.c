@@ -14,34 +14,25 @@
 
     ISR(CAN_INTERRUPT_VECTOR){
         cli();
-        //Clearing flags
-
-        // Work
-        // printf("CAN Interrupt: You've got mail!\n\r");
-
         struct can_message message = can_read_message(0);
         can_receive_state = message.id;
-        // printf("message.id = %d\n\r", );
-        
-        // game_util_can_receive_parser(message);
-
-        // _delay_ms(10000);
         can_controller_clear_receive_interrupt_flag();
-        // set_bit(CAN_INTERRUPT_FLAG_REG, CAN_INTERRUPT_PIN);
         sei();
     }
 
 #endif
 
-void can_send_message(int id, int length, uint8_t* arr, int transmit_line){ 
+void can_send_message(int id, int length, uint8_t* arr, int transmit_line){
     struct can_message message;
     message.id = id;
     message.length = length;
+
+    //Loading data
     for (int i = 0; i < length; i++){
-        // printf("Arr i,%d = %d\n\r", i , arr[i]);
         message.data[i] = arr[i];
-        // printf("Messsage.data i,%d = %d\n\r", i , message.data[i]);
     }
+
+    // Declaring variables before switch case
     int transmit_address = 0;
     int id_high_address = 0;
     int id_low_address = 0;
@@ -49,6 +40,7 @@ void can_send_message(int id, int length, uint8_t* arr, int transmit_line){
     int request_to_send_address = 0;
     int transmit_buffer_flag_bit = 0;
     switch (transmit_line) {
+
         case 0:
             transmit_buffer_flag_bit = MCP_TX0IF;
             transmit_address = MCP_TXB0D0;
@@ -84,17 +76,21 @@ void can_send_message(int id, int length, uint8_t* arr, int transmit_line){
     can_controller_bit_modify(MCP_CANINTF, transmit_buffer_flag_bit, 0);
 }
 
+// Function to be used when not wanting to specify array length
 void can_send_array(int id, uint8_t* arr, int transmit_line){
     int length = SIZE(arr);
     can_send_message(id, length, &arr, transmit_line);
 }
 
+
 struct can_message can_read_message(int read_line){
+    // Declaring variables before switch case
     int read_address = 0;
     int msg_length_address = 0;
     int id_high_address = 0;
     int receive_buffer_flag_bit = 0;
     switch (read_line) {
+
         case 0:
             receive_buffer_flag_bit = MCP_RX0IF;
             read_address = MCP_RXB0D0;

@@ -37,11 +37,11 @@ int main(void){
 
     oled_reset();
     oled_print_picture();
-    
+
     can_controller_init();
 
     _delay_ms(15000);
-    
+
 
     uint8_t player_inputs[7];
     int player_inputs_length = SIZE(player_inputs);
@@ -69,7 +69,7 @@ int main(void){
             case 2:
                 printf("Test SRAM!\n\r");
                 can_send_message(TEST_SRAM, 1, &arr, 0);
-                message = can_read_message(0); // Change to can interrupt for reading from SRAM test and game score
+                message = can_read_message(0); 
                 if (message.id == SRAM_TESTED){
                     for (int i = 0; i < 2; i++){
                         printf("SRAM error %d = %d\n\r", i , message.data[i]);

@@ -179,9 +179,6 @@ Copyright 2003 Kimberly Otten Software Consulting
 
 // Receive buffers
 
-// #define MCP_RXB0SIDH    0b01100001
-// #define MCP_RXB1SIDH    0b01110001
-
 #define MCP_RXB0SIDL    0b01100010
 #define MCP_RXB1SIDL    0b01110010
 

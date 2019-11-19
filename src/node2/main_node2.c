@@ -23,7 +23,6 @@
 #include "pid.h"
 #include "servo_driver.h"
 #include "solenoid_driver.h"
-#include "timer_driver.h"
 #include "TWI_driver.h"
 
 
@@ -47,28 +46,26 @@ ISR(BADISR_vect){
 
 
 int main(void){
-	// Initialization
-	cli();
-	USART_Init ( MYUBRR );
-	can_controller_init();
+    // Initialization
+    cli();
+    USART_Init ( MYUBRR );
+    can_controller_init();
     servo_init();
     adc_init();
     TWI_Master_Initialise();
     solenoid_init();
     motor_init();
-    // game_logic_timer_init();
     encoder_init();
     motor_timer_init();
-    //motor_calibrate();
-	//Turning on interrupts
+    //Turning on interrupts
     sei();
 
-	struct can_message message;
+    struct can_message message;
 
 
-	while (1) {
-		game_util_can_receive_parser();
-		_delay_ms(100);
-	}
-	return 0;
+    while (1) {
+        game_util_can_receive_parser();
+        _delay_ms(100);
+    }
+    return 0;
 }

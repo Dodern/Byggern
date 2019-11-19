@@ -12,14 +12,9 @@ volatile int timer_state = 0;
 
 ISR(TIMER3_CAPT_vect){ 
     timer_state = 0; 
-    // printf("Timer state = %d\n\r", timer_state); 
     solenoid_timer_stop();
 } 
 
-// Checking if ISR is bad
-// ISR(BAD_ISR){
-//     printf("BAD ISR\n\r");
-// }
 
 void solenoid_init(){
 
@@ -27,9 +22,6 @@ void solenoid_init(){
     //Setting up trigger for Solenoid
     set_bit(DDRH, SOLENOID_TRIG_PIN); // Set the direction of solenoid trigger pin
     set_bit(PORTH, SOLENOID_TRIG_PIN); // Set the output initially high
-
-    //Disabling interrupts while setting up
-    
 
     // Interrupt
     set_bit(TIMSK3, ICIE3); // Enable interrupts when ICFn flag is set
@@ -60,7 +52,6 @@ void solenoid_punch(){
     _delay_ms(1500);
     set_bit(PORTH, SOLENOID_TRIG_PIN);
     sei();
-    // solenoid_timer_reset();
     solenoid_timer_start();
 }
 

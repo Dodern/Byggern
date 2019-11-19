@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-
 // Common
 #include "bit_macros.h"
 #include "uart.h"
@@ -29,9 +28,9 @@
 
 int main(void){
     // Initiating various devices
-	USART_Init ( MYUBRR );
+    USART_Init ( MYUBRR );
     xmem_init();
-    
+
     can_controller_init();
 
     struct can_message message;
